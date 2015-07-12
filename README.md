@@ -1,2 +1,4 @@
 # tws
-Telll web services
+Telll web services.
+
+It responds to player, sender and receiver calls.
