@@ -15,7 +15,6 @@ sub login {
 		// return $self->render(status => 400, json => {error => "Please provide password."});
 
 	my $auth = $self->user_login($user, $password);
-	use Data::Dumper; print Dumper $auth;
 	return $self->render(status => 401, json => {error => "Incorrect username or password."}) if not defined $auth;
 
 	$self->render(json => {auth_key => $auth->auth_key});

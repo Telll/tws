@@ -27,7 +27,11 @@ sub startup {
 		my $self	= shift;
 		my $key		= shift;
 
-		return !!$key
+		my $auth = $self->resultset("Auth")->find({auth_key => $key});
+		if($auth) {
+			$self->stash->{user} = $auth->user;
+			return 1;
+		}
 	});
 
 	$self->helper(user_login => sub {
@@ -36,6 +40,7 @@ sub startup {
 		my $password	= shift;
 
 		my $user = $self->resultset("User")->find({username => $username, password => $password});
+		$self->stash->{user} = $user;
 		$user->_login if $user
 	});
 
