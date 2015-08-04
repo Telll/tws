@@ -6,7 +6,7 @@ sub detail {
 	my $movie_id	= $self->param("movie_id");
 
 	my $movie_data = $self->get_movie_data($movie_id);
-	$self->render(json => $movie_data);
+	$self->render(json => {data => [$movie_data]});
 }
 
 42
