@@ -62,7 +62,9 @@ sub startup {
 	$root->post('/login')->to('session#login');
 
 	my $app = $root->under('/app')->to('session#verify');
-	$app->websocket('/photolink')->to('photolink#connect');
+	$app->websocket('/photolink/:api_key/:auth_key')->to('photolink#wsconnect');
+	$app->get('/photolink/lp')->to('photolink#longpolling');
+	$app->post('/photolink/send')->to('photolink#send_pl');
 	my $player = $app->under('/player');
 	$player->get("/movie/:movie_id")->to('movie#detail');
 }

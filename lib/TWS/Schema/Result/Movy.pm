@@ -120,8 +120,13 @@ sub movie_data {
 
 	{
 		id		=> $self->id,
+		category	=> "NYI",
 		title		=> $self->title,
 		description	=> $self->description,
+		cript		=> "NYI",
+		author		=> "NYI",
+		media		=> {_ => "NYI"},
+		player		=> {_ => "NYI"},
 	}
 }
 

@@ -24,6 +24,10 @@ sub verify {
 	my $self = shift;
 
 	my $auth_key		= $self->req->headers->header("X-Auth-Key");
+	if(not $auth_key) {
+		$auth_key = $self->stash->{auth_key};
+		print "$auth_key$/";
+	}
 	my $authenticated	= $self->validate_auth_key($auth_key);
 	if(not $authenticated) {
 		print "not authenticated$/";
