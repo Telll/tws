@@ -53,6 +53,15 @@ sub startup {
 		return $movie->movie_data if $movie;
 	});
 
+	$self->helper("get_photolink" => sub {
+		my $self	= shift;
+		my $movie_id	= shift;
+		my $plid	= shift;
+
+		my $photolink = $self->resultset("Photolink")->find({movies_idmovies => $movie_id, idphotolinks => $plid});
+		return $photolink->data if $photolink;
+	});
+
 	# Router
 	my $r = $self->routes;
 
@@ -64,7 +73,7 @@ sub startup {
 	my $app = $root->under('/app')->to('session#verify');
 	$app->websocket('/photolink/:api_key/:auth_key')->to('photolink#wsconnect');
 	$app->get('/photolink/lp')->to('photolink#longpolling');
-	$app->post('/photolink/send')->to('photolink#send_pl');
+	$app->post('/photolink/send/:movie_id/:plid')->to('photolink#send_pl');
 	my $player = $app->under('/player');
 	$player->get("/movie/:movie_id")->to('movie#detail');
 }

@@ -1,4 +1,5 @@
 package TWS::WSCommands;
+use Mojo::JSON qw/encode_json/;
 
 sub new {
 	my $class = shift;
@@ -11,18 +12,18 @@ sub new {
 sub add {
 	my $self	= shift;
 	my $user	= shift;
-	my $client	= shift;
+	my $tx		= shift;
 
-	push @{ $self->{clients}{$user->email} }, {user => $user, client => $client, meth => ($client->isa("Mojo::Transaction::WebSocket") ? "send" : "write_chunk")}
+	push @{ $self->{clients}{$user->email} }, {user => $user, tx => $tx}
 }
 
 sub send_clients {
 	my $self	= shift;
 	my $email	= shift;
+	my $data	= shift;
 
 	for my $client(@{ $self->{clients}{$email} }) {
-		my $meth = $client->{meth};
-		$client->{client}->$meth(@_)
+		$client->{tx}->write_chunk(encode_json($data) . $/);
 	}
 }
 

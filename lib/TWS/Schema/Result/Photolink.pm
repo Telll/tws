@@ -176,4 +176,25 @@ __PACKAGE__->belongs_to(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+sub link { shift()->urls_idurl }
+
+sub data {
+	my $self	= shift;
+
+	{
+		id		=> $self->idphotolinks,
+		category	=> "NYI",
+		title		=> $self->title,
+		description	=> $self->description,
+		role		=> "NYI",
+		sponsor		=> "NYI",
+		media		=> {
+			type		=> "jpg",
+			url		=> "http://www.telll.me/images/necklace.jpg"
+		},
+		link		=> $self->link->data
+	}
+}
+
 1;

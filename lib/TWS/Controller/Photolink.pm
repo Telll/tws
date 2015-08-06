@@ -7,7 +7,7 @@ my $clients = TWS::WSCommands->new;
 
 sub connectws {
 	my $self	= shift;
-	$clients->add($self->stash->{user}, $self->tx);
+	$clients->add($self->stash->{user}, $self);
 
 	$self->on(message => sub {
 		my $self	= shift;
@@ -19,9 +19,13 @@ sub connectws {
 
 sub longpolling {
 	my $self	= shift;
+	
+	$self->write_chunk;
+
 	#Mojo::IOLoop->stream($self->tx->connection)->timeout(30);
-	$clients->add($self->stash->{user}, $self->tx);
-	my $id = Mojo::IOLoop->recurring(5 => sub {
+
+	$clients->add($self->stash->{user}, $self);
+	my $id = Mojo::IOLoop->recurring(10 => sub {
 		$self->write_chunk("alive?$/");
 	});
 
@@ -30,10 +34,17 @@ sub longpolling {
 
 sub send_pl {
 	my $self	= shift;
-	my $msg		= $self->req->json;
+	my $movie_id	= $self->stash->{movie_id};
+	my $plid	= $self->stash->{plid};
 
-	$clients->photolink($msg);
-	$self->render(json => {sent => "OK"})
+	my $pl = $self->get_photolink($movie_id, $plid);
+	my $res = Mojo::JSON->true;
+	if(not $pl) {
+		$res = Mojo::JSON->false;
+	} else {
+		$clients->photolink($self->stash->{user}->email, $pl);
+	}
+	$self->render(json => {sent => $res})
 }
 
 42

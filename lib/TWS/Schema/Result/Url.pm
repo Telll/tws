@@ -98,4 +98,13 @@ __PACKAGE__->has_many(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+sub data {
+	my $self	= shift;
+	{
+		title	=> "NYI",
+		rel 	=> "NYI",
+		href	=> $self->value,
+	}
+}
 1;
