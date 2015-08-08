@@ -3,7 +3,9 @@ use Mojo::Base 'Mojolicious';
 use TWS::Schema;
 
 has schema => sub {
-	TWS::Schema->connect('dbi:mysql:database=tws', 'root', '2c%jjTELLL9*8g)');
+	my $self = shift;
+	my $db = $self->config->{db};
+	TWS::Schema->connect($db->{connect_string}, $db->{user}, $db->{password});
 };
 
 has delimiter => sub {
@@ -13,7 +15,18 @@ has delimiter => sub {
 sub startup {
 	my $self = shift;
 
-	$self->plugin(Minion => {File => "/tmp/bla.db"});
+	$self->plugin(JSONConfig => {
+		file	=> $self->home->rel_dir("tws.json"),
+		default => {
+			minion_backend	=> {File => "/tmp/bla.db"},
+			email		=> {
+				template	=> "email.mt",
+				from		=> 'test@telll.com',
+				subject		=> "Telll - photolinks",
+			},
+		},
+	});
+	$self->plugin(Minion => $self->config->{minion_backend});
 
 	$self->minion->add_task(email => sub {
 		use Mojo::Template;
@@ -29,14 +42,14 @@ sub startup {
 
 		print "Processing email: $email, ", Dumper $photolink;
 		my $mt = Mojo::Template->new;
-		my $output = $mt->render_file("email.mt", $email, $photolink);
+		my $output = $mt->render_file($self->config->{email}->{template}, $email, $photolink);
 		print $output, $/;
 
 		my $mail = Email::Simple->create(
 			header => [
-				To     => $email,
-				From    => 'test@telll.com',
-				Subject => "Telll - photolinks",
+				To	=> $email,
+				From	=> $self->config->{email}->{from},
+				Subject	=> $self->config->{email}->{subject},
 			],
 			body => $output,
 		);
