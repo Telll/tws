@@ -3,7 +3,9 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::JSON qw(decode_json);
 use TWS::WSCommands;
 
-my $clients = TWS::WSCommands->new;
+my $delimiter = "$///" . ("-" x 10) . "//";
+
+my $clients = TWS::WSCommands->new($delimiter);
 
 sub connectws {
 	my $self	= shift;
@@ -26,10 +28,13 @@ sub longpolling {
 
 	$clients->add($self->stash->{user}, $self);
 	my $id = Mojo::IOLoop->recurring(10 => sub {
-		$self->write_chunk("alive?$/");
+		$self->write_chunk("alive?$delimiter");
 	});
 
-	$self->on(finish => sub { Mojo::IOLoop->remove($id) });
+	$self->on(finish => sub {
+		Mojo::IOLoop->remove($id);
+		$clients->remove($self->stash->{user}, $self)
+	});
 }
 
 sub send_pl {
