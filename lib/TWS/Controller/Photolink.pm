@@ -42,12 +42,14 @@ sub send_pl {
 	my $movie_id	= $self->stash->{movie_id};
 	my $plid	= $self->stash->{plid};
 
+
 	my $pl = $self->get_photolink($movie_id, $plid);
 	my $res = Mojo::JSON->true;
 	if(not $pl) {
 		$res = Mojo::JSON->false;
 	} else {
 		$clients->photolink($self->stash->{user}->email, $pl);
+		$self->minion->enqueue(email => [$self->stash->{user}->email, $pl]);
 	}
 	$self->render(json => {sent => $res})
 }

@@ -9,10 +9,60 @@ has schema => sub {
 sub startup {
 	my $self = shift;
 
+	$self->plugin(Minion => {File => "/tmp/bla.db"});
+
+	my $delimiter = "$///" . ("-" x 10) . "//";
+
+	$self->minion->add_task(email => sub {
+		use Mojo::Template;
+		use Email::Sender::Simple qw(sendmail);
+		use Email::Simple;
+		use Email::Simple::Creator;
+		use Email::Sender::Transport::SMTP::TLS;
+		use Data::Dumper;
+
+		my $job		= shift;
+		my $email	= shift;
+		my $photolink	= shift;
+
+		print "Processing email: $email, ", Dumper $photolink;
+		my $mt = Mojo::Template->new;
+		my $output = $mt->render_file("email.mt", $email, $photolink);
+		print $output, $/;
+
+		my $mail = Email::Simple->create(
+			header => [
+				To     => $email,
+				From    => 'test@telll.com',
+				Subject => "Telll - photolinks",
+			],
+			body => $output,
+		);
+		#my $transport = Email::Sender::Transport::SMTP::TLS->new({
+		#		host => app->config->{smtp_host},
+		#		port => app->config->{smtp_port},
+		#		username => app->config->{smtp_user},
+		#		password => app->config->{smtp_pass},
+		#		timeout => 10,
+		#	});
+
+		eval {
+			#sendmail($mail, {transport => $transport });
+		};
+		if ($@) {
+			$job->app->log->debug("error: $@");
+			$job->finish({ status => "error", msg => $@});
+		}
+		else {
+			$job->finish({ status => "success", msg => "Mail to $email sent"});
+		}
+	});
+
 	#$self->mode('production');
 
 	# helpers
 
+	$self->helper(delimiter => sub {$delimiter});
 	$self->helper(db => sub { $self->app->schema });
 	$self->helper(resultset => sub { shift()->db->resultset(shift) });
 
