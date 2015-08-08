@@ -6,12 +6,14 @@ has schema => sub {
 	TWS::Schema->connect('dbi:mysql:database=tws', 'root', '2c%jjTELLL9*8g)');
 };
 
+has delimiter => sub {
+	"$///" . ("-" x 10) . "//";
+};
+
 sub startup {
 	my $self = shift;
 
 	$self->plugin(Minion => {File => "/tmp/bla.db"});
-
-	my $delimiter = "$///" . ("-" x 10) . "//";
 
 	$self->minion->add_task(email => sub {
 		use Mojo::Template;
@@ -62,7 +64,7 @@ sub startup {
 
 	# helpers
 
-	$self->helper(delimiter => sub {$delimiter});
+	$self->helper(delimiter => sub {$self->app->delimiter});
 	$self->helper(db => sub { $self->app->schema });
 	$self->helper(resultset => sub { shift()->db->resultset(shift) });
 
