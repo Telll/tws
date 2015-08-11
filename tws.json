@@ -2,6 +2,14 @@
 	"db": {
 		"connect_string":	"dbi:mysql:database=tws",
 		"user":			"root",
-		"password":		"2c%jjTELLL9*8g)"
+		"password":		"2c%jjTELLL9*8g)",
+		"minion_backend":	{
+			"File": "/tmp/bla.db"
+		},
+		"email": {
+			"template":	"email.mt",
+			"from":		"test@telll.com",
+			"subject":	"Telll - photolink!"
+		}
 	}
 }

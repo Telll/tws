@@ -15,6 +15,8 @@ has delimiter => sub {
 sub startup {
 	my $self = shift;
 
+	$self->plugin("CORS");
+
 	$self->plugin(JSONConfig => {
 		file	=> $self->home->rel_dir("tws.json"),
 		default => {
@@ -29,48 +31,35 @@ sub startup {
 	$self->plugin(Minion => $self->config->{minion_backend});
 
 	$self->minion->add_task(email => sub {
-		use Mojo::Template;
-		use Email::Sender::Simple qw(sendmail);
-		use Email::Simple;
-		use Email::Simple::Creator;
-		use Email::Sender::Transport::SMTP::TLS;
-		use Data::Dumper;
+		#use Mojo::Template;
+		#use Data::Dumper;
+		#use Net::AWS::SES;
 
-		my $job		= shift;
-		my $email	= shift;
-		my $photolink	= shift;
+		#my $job		= shift;
+		#my $email	= shift;
+		#my $photolink	= shift;
 
-		print "Processing email: $email, ", Dumper $photolink;
-		my $mt = Mojo::Template->new;
-		my $output = $mt->render_file($self->config->{email}->{template}, $email, $photolink);
-		print $output, $/;
+		#print "Processing email: $email, ", Dumper $photolink;
+		#my $mt = Mojo::Template->new;
+		#my $output = $mt->render_file($self->config->{email}->{template}, $email, $photolink);
+		#print $output, $/;
 
-		my $mail = Email::Simple->create(
-			header => [
-				To	=> $email,
-				From	=> $self->config->{email}->{from},
-				Subject	=> $self->config->{email}->{subject},
-			],
-			body => $output,
-		);
-		#my $transport = Email::Sender::Transport::SMTP::TLS->new({
-		#		host => app->config->{smtp_host},
-		#		port => app->config->{smtp_port},
-		#		username => app->config->{smtp_user},
-		#		password => app->config->{smtp_pass},
-		#		timeout => 10,
-		#	});
-
-		eval {
-			#sendmail($mail, {transport => $transport });
-		};
-		if ($@) {
-			$job->app->log->debug("error: $@");
-			$job->finish({ status => "error", msg => $@});
-		}
-		else {
-			$job->finish({ status => "success", msg => "Mail to $email sent"});
-		}
+		#my $aws		= $self->config->{aws};
+		#my $email_conf	= $self->config->{email};
+		#my $ses = Net::AWS::SES->new(access_key => $aws->{access_key}, secret_key => $aws->{secret_key});
+		#my $r = $ses->send(
+		#	From    => $email_conf->{from},
+		#	To      => $email,
+		#	Subject => $email_conf->{subject},
+		#	Body    => $output,
+		#);
+		#if (not $r->is_success) {
+		#	$job->app->log->debug("error: $@");
+		#	$job->finish({ status => "error", msg => $@});
+		#}
+		#else {
+		#	$job->finish({ status => "success", msg => "Mail to $email sent"});
+		#}
 	});
 
 	#$self->mode('production');
