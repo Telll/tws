@@ -41,9 +41,10 @@ sub send_pl {
 	my $self	= shift;
 	my $movie_id	= $self->stash->{movie_id};
 	my $plid	= $self->stash->{plid};
-
+	my $extradata	= $self->req->json->{extradata};
 
 	my $pl = $self->get_photolink($movie_id, $plid);
+	$pl->{extradata} = $extradata;
 	my $res = Mojo::JSON->true;
 	if(not $pl) {
 		$res = Mojo::JSON->false;
