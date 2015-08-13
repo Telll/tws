@@ -160,6 +160,13 @@ sub startup {
 		$self->res->headers->header(Allow => "POST");
 		$self->render(text => "OK");
 	});
+
+	$root->options('/app/photolink/send/:movie_id/:plid')->to(cb => sub {
+		my $self = shift;
+		print $self->tx->remote_address, $/;
+		$self->res->headers->header(Allow => "POST");
+		$self->render(text => "OK");
+	});
 }
 
 42
