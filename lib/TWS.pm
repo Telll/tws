@@ -1,6 +1,7 @@
 package TWS;
 use Mojo::Base 'Mojolicious';
 use TWS::Schema;
+use Mojo::EventEmitter;
 
 has schema => sub {
 	my $self = shift;
@@ -15,7 +16,21 @@ has delimiter => sub {
 sub startup {
 	my $self = shift;
 
+	$self->plugin(SecureCORS => {
+		"cors.origin"		=> "*",
+		"cors.credentials"	=> 0,
+		"cors.headers"		=> "X-API-Key, X-Auth-Key",
+		"cors.expose"		=> "X-API-Key, X-Auth-Key",
+		"cors.methods"		=> "GET, POST, PUT, DELETE, OPTIONS",
+	});
+
 	$self->plugin("CORS");
+
+	$self->hook( before_dispatch => sub {
+			my $c = shift;
+			$c->res->headers->header( 'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key' );
+		}
+	);
 
 	$self->plugin(JSONConfig => {
 		file	=> $self->home->rel_dir("tws.json"),
@@ -66,6 +81,7 @@ sub startup {
 
 	# helpers
 
+	$self->helper(events => sub { state $events = Mojo::EventEmitter->new });
 	$self->helper(delimiter => sub {$self->app->delimiter});
 	$self->helper(db => sub { $self->app->schema });
 	$self->helper(resultset => sub { shift()->db->resultset(shift) });
@@ -120,16 +136,30 @@ sub startup {
 	my $r = $self->routes;
 
 	# Normal route to controller
-	my $root = $r->under('/')->to('api#validate');
+	my $root = $r->under_strict_cors('/')->to(
+		"cors.origin"		=> "*",
+		"cors.credentials"	=> 0,
+		"cors.headers"		=> "X-API-Key, X-Auth-Key",
+		"cors.expose"		=> "X-API-Key, X-Auth-Key",
+		"cors.methods"		=> "GET, POST, PUT, DELETE, OPTIONS",
+	);
+	my $api = $root->under('/')->to('api#validate');
 
-	$root->post('/login')->to('session#login');
+	$api->post('/login')->to('session#login');
 
-	my $app = $root->under('/app')->to('session#verify');
+	my $app = $api->under('/app')->to('session#verify');
 	$app->websocket('/photolink/:api_key/:auth_key')->to('photolink#wsconnect');
 	$app->get('/photolink/lp')->to('photolink#longpolling');
 	$app->post('/photolink/send/:movie_id/:plid')->to('photolink#send_pl');
 	my $player = $app->under('/player');
 	$player->get("/movie/:movie_id")->to('movie#detail');
+
+	$root->options('/app/photolink/lp')->to(cb => sub {
+		my $self = shift;
+		print $self->tx->remote_address, $/;
+		$self->res->headers->header(Allow => "POST");
+		$self->render(text => "OK");
+	});
 }
 
 42

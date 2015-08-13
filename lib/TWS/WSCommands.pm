@@ -16,6 +16,8 @@ sub add {
 	my $user	= shift;
 	my $tx		= shift;
 
+	$tx->kept_alive(1);
+	print "Adding: ", $tx->remote_address, $/;
 	push @{ $self->{clients}{$user->email} }, {user => $user, tx => $tx}
 }
 
@@ -32,8 +34,15 @@ sub send_clients {
 	my $email	= shift;
 	my $data	= shift;
 
+	print "clients: @{ $self->{clients}{$email} }$/";
 	for my $client(@{ $self->{clients}{$email} }) {
-		$client->{tx}->write_chunk(encode_json($data) . $self->{delimiter}) if $client->{tx}->tx
+		if(not $client->{tx}->is_finished) {
+			my $msg = encode_json($data);
+			print "sending: ", $client->{tx}->remote_address, ", $msg$/";
+			$client->{tx}->res->content->write_chunk($msg . $self->{delimiter});
+		} else {
+			$self->remove($email, $client->{tx})
+		}
 	}
 }
 

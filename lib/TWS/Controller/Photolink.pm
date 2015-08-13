@@ -1,6 +1,6 @@
 package TWS::Controller::Photolink;
 use Mojo::Base 'Mojolicious::Controller';
-use Mojo::JSON qw(decode_json);
+use Mojo::JSON qw(decode_json encode_json);
 use TWS::WSCommands;
 
 my $delimiter = "$///" . ("-" x 10) . "//";
@@ -24,17 +24,9 @@ sub longpolling {
 	
 	$self->write_chunk;
 
-	#Mojo::IOLoop->stream($self->tx->connection)->timeout(30);
-
-	$clients->add($self->stash->{user}, $self);
-	my $id = Mojo::IOLoop->recurring(10 => sub {
-		$self->write_chunk("alive?$delimiter");
-	});
-
-	$self->on(finish => sub {
-		Mojo::IOLoop->remove($id);
-		$clients->remove($self->stash->{user}, $self)
-	});
+	$self->inactivity_timeout(3600);
+	my $cb = $self->events->on($self->stash->{user}->email => sub { $self->write_chunk(pop . $delimiter) });
+	$self->on(finish => sub { shift->events->unsubscribe($self->stash->{user}->email => $cb) });
 }
 
 sub send_pl {
@@ -49,7 +41,7 @@ sub send_pl {
 	if(not $pl) {
 		$res = Mojo::JSON->false;
 	} else {
-		$clients->photolink($self->stash->{user}->email, $pl);
+		$self->events->emit($self->stash->{user}->email => encode_json $pl);
 		$self->minion->enqueue(email => [$self->stash->{user}->email, $pl]);
 	}
 	$self->render(json => {sent => $res})

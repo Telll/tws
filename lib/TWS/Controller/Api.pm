@@ -5,9 +5,7 @@ sub validate {
 	my $self	= shift;
 	my $api_key	= $self->req->headers->header("X-API-Key");
 	if(not $api_key) {
-		use Data::Dumper; print Dumper $self->stash;
 		$api_key = $self->stash->{api_key};
-		print "$api_key$/";
 	}
 	if(not defined $api_key) {
 		$self->render(status => 403, json => {error => "API key is missing."});
