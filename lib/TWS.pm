@@ -136,37 +136,41 @@ sub startup {
 	my $r = $self->routes;
 
 	# Normal route to controller
-	my $root = $r->under_strict_cors('/')->to(
+	my $api = $r->under("/")->to(
+		"api#validate",
 		"cors.origin"		=> "*",
-		"cors.credentials"	=> 0,
+		"cors.credentials"	=> 1,
 		"cors.headers"		=> "X-API-Key, X-Auth-Key",
 		"cors.expose"		=> "X-API-Key, X-Auth-Key",
-		"cors.methods"		=> "GET, POST, PUT, DELETE, OPTIONS",
 	);
-	my $api = $root->under('/')->to('api#validate');
 
-	$api->post('/login')->to('session#login');
+	$api->post("/login")->to("session#login");
+	$api->cors("/login");
 
-	my $app = $api->under('/app')->to('session#verify');
-	$app->websocket('/photolink/:api_key/:auth_key')->to('photolink#wsconnect');
-	$app->get('/photolink/lp')->to('photolink#longpolling');
-	$app->post('/photolink/send/:movie_id/:plid')->to('photolink#send_pl');
-	my $player = $app->under('/player');
-	$player->get("/movie/:movie_id")->to('movie#detail');
+	my $app = $api->under("/app")->to("session#verify");
+	my $appcors = $api->under("/app");
 
-	$root->options('/app/photolink/lp')->to(cb => sub {
-		my $self = shift;
-		print $self->tx->remote_address, $/;
-		$self->res->headers->header(Allow => "POST");
-		$self->render(text => "OK");
-	});
+	$app->websocket("/photolink/:api_key/:auth_key")->to("photolink#wsconnect");
+	$appcors->cors("/photolink/:api_key/:auth_key");
 
-	$root->options('/app/photolink/send/:movie_id/:plid')->to(cb => sub {
-		my $self = shift;
-		print $self->tx->remote_address, $/;
-		$self->res->headers->header(Allow => "POST");
-		$self->render(text => "OK");
-	});
+	$app->get("/photolink/lp")->to("photolink#longpolling");
+	$appcors->cors("/photolink/lp")->to(
+		"cors.methods"	=> "GET",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+	);
+
+	$app->post("/photolink/send/:movie_id/:plid")->to("photolink#send_pl");
+	$appcors->cors("/photolink/send/:movie_id/:plid")->to(
+		"cors.methods"	=> "POST",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+	);
+
+	my $player = $app->under("/player");
+	$player->get("/movie/:movie_id")->to("movie#detail");
+	$appcors->under("/player")->cors("/movie/:movie_id")->to(
+		"cors.methods"	=> "GET",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+	);
 }
 
 42
