@@ -183,7 +183,7 @@ sub data {
 		sponsor		=> "NYI",
 		media		=> {
 			type		=> "jpg",
-			url		=> "http://www.telll.me/images/necklace.jpg"
+			url		=> $self->thumb,
 		},
 		link		=> [ map {$_->data} $self->links->all ]
 	}

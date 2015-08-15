@@ -121,7 +121,7 @@ sub data {
 		title		=> $self->title,
 		description	=> $self->description,
 		rel 		=> "NYI",
-		url		=> $self->value,
+		url		=> $self->href,
 	}
 }
 1;
