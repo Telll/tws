@@ -58,22 +58,17 @@ __PACKAGE__->table("photolinks");
   is_nullable: 1
   size: 45
 
-=head2 url
-
-  data_type: 'integer'
-  is_nullable: 1
-
-=head2 urls_idurls
-
-  data_type: 'integer'
-  is_foreign_key: 1
-  is_nullable: 0
-
 =head2 movies_idmovies
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
+
+=head2 thumb
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 255
 
 =cut
 
@@ -86,12 +81,10 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "mediatype",
   { data_type => "varchar", is_nullable => 1, size => 45 },
-  "url",
-  { data_type => "integer", is_nullable => 1 },
-  "urls_idurls",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "movies_idmovies",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "thumb",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
 );
 
 =head1 PRIMARY KEY
@@ -100,13 +93,11 @@ __PACKAGE__->add_columns(
 
 =item * L</idphotolinks>
 
-=item * L</movies_idmovies>
-
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("idphotolinks", "movies_idmovies");
+__PACKAGE__->set_primary_key("idphotolinks");
 
 =head1 RELATIONS
 
@@ -155,29 +146,29 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 urls_idurl
+=head2 urls
 
-Type: belongs_to
+Type: has_many
 
 Related object: L<TWS::Schema::Result::Url>
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "urls_idurl",
+__PACKAGE__->has_many(
+  "urls",
   "TWS::Schema::Result::Url",
-  { idurls => "urls_idurls" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { "foreign.photolinks_idphotolinks" => "self.idphotolinks" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-01 00:27:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:V1gTBZo8M2kWrY0sUqbgZQ
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-15 02:56:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Au+enLAa63nMLi5OL2R7tg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-sub link { shift()->urls_idurl }
+sub links { shift()->urls }
 
 sub data {
 	my $self	= shift;
@@ -187,13 +178,14 @@ sub data {
 		category	=> "NYI",
 		title		=> $self->title,
 		description	=> $self->description,
+		thumb		=> $self->thumb,
 		role		=> "NYI",
 		sponsor		=> "NYI",
 		media		=> {
 			type		=> "jpg",
 			url		=> "http://www.telll.me/images/necklace.jpg"
 		},
-		link		=> $self->link->data
+		link		=> [ map {$_->data} $self->links->all ]
 	}
 }
 

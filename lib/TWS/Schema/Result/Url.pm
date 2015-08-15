@@ -52,6 +52,24 @@ __PACKAGE__->table("urls");
   is_nullable: 1
   size: [2,0]
 
+=head2 description
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 255
+
+=head2 photolinks_idphotolinks
+
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0
+
+=head2 title
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 45
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -61,50 +79,49 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "value",
   { data_type => "decimal", is_nullable => 1, size => [2, 0] },
+  "description",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
+  "photolinks_idphotolinks",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "title",
+  { data_type => "varchar", is_nullable => 1, size => 45 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</idurls>
-
-=back
-
-=cut
-
-__PACKAGE__->set_primary_key("idurls");
 
 =head1 RELATIONS
 
-=head2 photolinks
+=head2 photolinks_idphotolink
 
-Type: has_many
+Type: belongs_to
 
 Related object: L<TWS::Schema::Result::Photolink>
 
 =cut
 
-__PACKAGE__->has_many(
-  "photolinks",
+__PACKAGE__->belongs_to(
+  "photolinks_idphotolink",
   "TWS::Schema::Result::Photolink",
-  { "foreign.urls_idurls" => "self.idurls" },
-  { cascade_copy => 0, cascade_delete => 0 },
+  { idphotolinks => "photolinks_idphotolinks" },
+  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-01 00:27:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1WAIoBfVrFBS2g8k0QhF2w
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-15 03:09:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u0UIb+qVnlnjgPkbMxtLcA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
+sub photolink {
+	shift()->photolinks_idphotolinks
+}
+
 sub data {
 	my $self	= shift;
 	{
-		title	=> "NYI",
-		rel 	=> "NYI",
-		href	=> $self->value,
+		title		=> $self->title,
+		description	=> $self->description,
+		rel 		=> "NYI",
+		url		=> $self->value,
 	}
 }
 1;
