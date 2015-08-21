@@ -109,11 +109,24 @@ sub startup {
 		my $username	= shift;
 		my $password	= shift;
 
-		my $user = $self->resultset("User")->find({username => $username, password => $password});
+		my $user = $self->resultset("User")->authenticate($username, $password);
 		$self->stash->{user} = $user;
-		$user->_login if $user
+		return $user->_login if $user;
+		undef
 	});
 
+	$self->helper(create_user => sub {
+		my $self	= shift;
+		my $data	= shift;
+
+		my $user	= $self->resultset("User");
+		if(exists $data->{password}) {
+			$data->{salt}		= $user->generate_salt;
+			$data->{counter}	= 1024;
+			$data->{password}	= $user->hashfy_password($data->{password}, $data->{counter}, $data->{salt});
+		}
+		$user->create($data);
+	});
 
 	$self->helper("get_movie_data" => sub {
 		my $self	= shift;
@@ -128,8 +141,7 @@ sub startup {
 		my $movie_id	= shift;
 		my $plid	= shift;
 
-		my $photolink = $self->resultset("Photolink")->find({movies_idmovies => $movie_id, idphotolinks => $plid});
-		return $photolink->data if $photolink;
+		$self->resultset("Photolink")->find({movies_idmovies => $movie_id, id => $plid});
 	});
 
 	# Router
@@ -150,26 +162,32 @@ sub startup {
 	my $app = $api->under("/app")->to("session#verify");
 	my $appcors = $api->under("/app");
 
-	$app->websocket("/photolink/:api_key/:auth_key")->to("photolink#wsconnect");
-	$appcors->cors("/photolink/:api_key/:auth_key");
+	#$app->websocket("/photolink/:api_key/:auth_key")->to("photolink#wsconnect");
+	#$appcors->cors("/photolink/:api_key/:auth_key");
+
+	$app->post("/user")->to("user#create");
+	$appcors->cors("/user")->to(
+		"cors.methods"	=> "POST",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
 
 	$app->get("/photolink/lp")->to("photolink#longpolling");
 	$appcors->cors("/photolink/lp")->to(
 		"cors.methods"	=> "GET",
-		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
 	$app->post("/photolink/send/:movie_id/:plid")->to("photolink#send_pl");
 	$appcors->cors("/photolink/send/:movie_id/:plid")->to(
 		"cors.methods"	=> "POST",
-		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
 	my $player = $app->under("/player");
 	$player->get("/movie/:movie_id")->to("movie#detail");
 	$appcors->under("/player")->cors("/movie/:movie_id")->to(
 		"cors.methods"	=> "GET",
-		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 }
 

@@ -35,9 +35,11 @@ __PACKAGE__->table("urls");
 
 =head1 ACCESSORS
 
-=head2 idurls
+=head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 href
@@ -58,9 +60,10 @@ __PACKAGE__->table("urls");
   is_nullable: 1
   size: 255
 
-=head2 photolinks_idphotolinks
+=head2 photolink
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  extra: {unsigned => 1}
   is_foreign_key: 1
   is_nullable: 0
 
@@ -73,23 +76,47 @@ __PACKAGE__->table("urls");
 =cut
 
 __PACKAGE__->add_columns(
-  "idurls",
-  { data_type => "integer", is_nullable => 0 },
+  "id",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
   "href",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "value",
   { data_type => "decimal", is_nullable => 1, size => [2, 0] },
   "description",
   { data_type => "varchar", is_nullable => 1, size => 255 },
-  "photolinks_idphotolinks",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "photolink",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 0,
+  },
   "title",
   { data_type => "varchar", is_nullable => 1, size => 45 },
 );
 
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<id>
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("id", ["id"]);
+
 =head1 RELATIONS
 
-=head2 photolinks_idphotolink
+=head2 photolink
 
 Type: belongs_to
 
@@ -98,22 +125,18 @@ Related object: L<TWS::Schema::Result::Photolink>
 =cut
 
 __PACKAGE__->belongs_to(
-  "photolinks_idphotolink",
+  "photolink",
   "TWS::Schema::Result::Photolink",
-  { idphotolinks => "photolinks_idphotolinks" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { id => "photolink" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-15 03:09:43
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u0UIb+qVnlnjgPkbMxtLcA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 02:43:56
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FnDrn+XSDVTPACDvYLR/FA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-sub photolink {
-	shift()->photolinks_idphotolinks
-}
 
 sub data {
 	my $self	= shift;

@@ -35,9 +35,11 @@ __PACKAGE__->table("auth");
 
 =head1 ACCESSORS
 
-=head2 idauth
+=head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 auth_key
@@ -52,16 +54,23 @@ __PACKAGE__->table("auth");
   datetime_undef_if_invalid: 1
   is_nullable: 0
 
-=head2 users_idusers
+=head2 user
 
-  data_type: 'integer'
-  is_nullable: 0
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_foreign_key: 1
+  is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
-  "idauth",
-  { data_type => "integer", is_nullable => 0 },
+  "id",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
   "auth_key",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "time",
@@ -70,15 +79,20 @@ __PACKAGE__->add_columns(
     datetime_undef_if_invalid => 1,
     is_nullable => 0,
   },
-  "users_idusers",
-  { data_type => "integer", is_nullable => 0 },
+  "user",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 1,
+  },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</idauth>
+=item * L</id>
 
 =item * L</auth_key>
 
@@ -86,20 +100,48 @@ __PACKAGE__->add_columns(
 
 =cut
 
-__PACKAGE__->set_primary_key("idauth", "auth_key");
+__PACKAGE__->set_primary_key("id", "auth_key");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<id>
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("id", ["id"]);
+
+=head1 RELATIONS
+
+=head2 user
+
+Type: belongs_to
+
+Related object: L<TWS::Schema::Result::User>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "user",
+  "TWS::Schema::Result::User",
+  { id => "user" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
+  },
+);
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-01 04:41:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BDVfbSEggHJTbql05HBO9w
-
-__PACKAGE__->belongs_to(users_idusers => "TWS::Schema::Result::User");
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 03:40:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:I8BrQkdRRNXx5oRRKjgeog
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-__PACKAGE__->belongs_to(users_idusers => "TWS::Schema::Result::User");
-
-sub user {
-	shift()->users_idusers
-}
 
 1;

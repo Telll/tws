@@ -39,7 +39,7 @@ __PACKAGE__->table("users");
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 16
+  size: 255
 
 =head2 email
 
@@ -60,16 +60,30 @@ __PACKAGE__->table("users");
   default_value: current_timestamp
   is_nullable: 1
 
-=head2 idusers
+=head2 id
+
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_auto_increment: 1
+  is_nullable: 0
+
+=head2 salt
+
+  data_type: 'char'
+  is_nullable: 0
+  size: 15
+
+=head2 counter
 
   data_type: 'integer'
-  is_nullable: 0
+  default_value: 1024
+  is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
   "username",
-  { data_type => "varchar", is_nullable => 0, size => 16 },
+  { data_type => "varchar", is_nullable => 0, size => 255 },
   "email",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "password",
@@ -81,23 +95,61 @@ __PACKAGE__->add_columns(
     default_value => \"current_timestamp",
     is_nullable => 1,
   },
-  "idusers",
-  { data_type => "integer", is_nullable => 0 },
+  "id",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
+  "salt",
+  { data_type => "char", is_nullable => 0, size => 15 },
+  "counter",
+  { data_type => "integer", default_value => 1024, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</idusers>
+=item * L</id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("idusers");
+__PACKAGE__->set_primary_key("id");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<username>
+
+=over 4
+
+=item * L</username>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("username", ["username"]);
 
 =head1 RELATIONS
+
+=head2 auths
+
+Type: has_many
+
+Related object: L<TWS::Schema::Result::Auth>
+
+=cut
+
+__PACKAGE__->has_many(
+  "auths",
+  "TWS::Schema::Result::Auth",
+  { "foreign.user" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 =head2 users_has_devices
 
@@ -110,28 +162,26 @@ Related object: L<TWS::Schema::Result::UsersHasDevice>
 __PACKAGE__->has_many(
   "users_has_devices",
   "TWS::Schema::Result::UsersHasDevice",
-  { "foreign.users_idusers" => "self.idusers" },
+  { "foreign.user" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 devices_iddevices
+=head2 devices
 
 Type: many_to_many
 
-Composing rels: L</users_has_devices> -> devices_iddevice
+Composing rels: L</users_has_devices> -> device
 
 =cut
 
-__PACKAGE__->many_to_many("devices_iddevices", "users_has_devices", "devices_iddevice");
+__PACKAGE__->many_to_many("devices", "users_has_devices", "device");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-01 04:41:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qYztLEGG1AXNdlTVXcjeOA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-21 03:41:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wcbRT1okEyju0PJyKuAKEg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-__PACKAGE__->has_many(auths => "TWS::Schema::Result::Auth", "users_idusers");
 
 use Digest::SHA1  qw(sha1_hex);
 my $counter;

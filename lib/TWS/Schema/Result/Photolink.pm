@@ -35,9 +35,11 @@ __PACKAGE__->table("photolinks");
 
 =head1 ACCESSORS
 
-=head2 idphotolinks
+=head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 title
@@ -73,8 +75,13 @@ __PACKAGE__->table("photolinks");
 =cut
 
 __PACKAGE__->add_columns(
-  "idphotolinks",
-  { data_type => "integer", is_nullable => 0 },
+  "id",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
   "title",
   { data_type => "varchar", is_nullable => 1, size => 45 },
   "description",
@@ -91,13 +98,13 @@ __PACKAGE__->add_columns(
 
 =over 4
 
-=item * L</idphotolinks>
+=item * L</id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("idphotolinks");
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -112,7 +119,7 @@ Related object: L<TWS::Schema::Result::Click>
 __PACKAGE__->has_many(
   "clicks",
   "TWS::Schema::Result::Click",
-  { "foreign.photolinks_idphotolinks" => "self.idphotolinks" },
+  { "foreign.photolink" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
@@ -131,21 +138,6 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 trackmotions
-
-Type: has_many
-
-Related object: L<TWS::Schema::Result::Trackmotion>
-
-=cut
-
-__PACKAGE__->has_many(
-  "trackmotions",
-  "TWS::Schema::Result::Trackmotion",
-  { "foreign.photolinks_idphotolinks" => "self.idphotolinks" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 urls
 
 Type: has_many
@@ -157,24 +149,29 @@ Related object: L<TWS::Schema::Result::Url>
 __PACKAGE__->has_many(
   "urls",
   "TWS::Schema::Result::Url",
-  { "foreign.photolinks_idphotolinks" => "self.idphotolinks" },
+  { "foreign.photolink" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-15 02:56:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Au+enLAa63nMLi5OL2R7tg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 02:32:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g/zJc3BUFhwtFTtwDDTujA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
 sub links { shift()->urls }
 
+sub click {
+	my $self = shift;
+	$self->create_related(clicks => {devices_iddevices => 0})
+}
+
 sub data {
 	my $self	= shift;
 
 	{
-		id		=> $self->idphotolinks,
+		id		=> $self->id,
 		category	=> "NYI",
 		title		=> $self->title,
 		description	=> $self->description,

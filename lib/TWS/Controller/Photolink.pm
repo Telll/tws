@@ -33,16 +33,19 @@ sub send_pl {
 	my $self	= shift;
 	my $movie_id	= $self->stash->{movie_id};
 	my $plid	= $self->stash->{plid};
-	my $extradata	= $self->req->json->{extradata};
+	my $json	= $self->req->json;
+	my $extradata	= $json->{extradata} if $json;
 
 	my $pl = $self->get_photolink($movie_id, $plid);
-	$pl->{extradata} = $extradata;
 	my $res = Mojo::JSON->true;
 	if(not $pl) {
 		$res = Mojo::JSON->false;
 	} else {
-		$self->events->emit($self->stash->{user}->email => encode_json $pl);
-		$self->minion->enqueue(email => [$self->stash->{user}->email, $pl]);
+		$pl->click;
+		my $pl_data = $pl->data;
+		$pl_data->{extradata} = $extradata if $extradata;
+		$self->events->emit($self->stash->{user}->email => encode_json $pl_data);
+		$self->minion->enqueue(email => [$self->stash->{user}->email, $pl_data]);
 	}
 	$self->render(json => {sent => $res})
 }

@@ -38,7 +38,6 @@ __PACKAGE__->table("trackmotions");
 =head2 photolinks_idphotolinks
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 0
 
 =head2 idtrackmotions
@@ -50,7 +49,7 @@ __PACKAGE__->table("trackmotions");
 
 __PACKAGE__->add_columns(
   "photolinks_idphotolinks",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "idtrackmotions",
   { data_type => "integer", is_nullable => 0 },
 );
@@ -69,21 +68,6 @@ __PACKAGE__->set_primary_key("idtrackmotions");
 
 =head1 RELATIONS
 
-=head2 photolinks_idphotolink
-
-Type: belongs_to
-
-Related object: L<TWS::Schema::Result::Photolink>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "photolinks_idphotolink",
-  "TWS::Schema::Result::Photolink",
-  { idphotolinks => "photolinks_idphotolinks" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
-);
-
 =head2 points
 
 Type: has_many
@@ -100,8 +84,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-01 00:27:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ckH0HKj385ZkG6jGulmvWg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 02:32:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5WpXu2Uc1COG+WUyLAEZNg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -35,44 +35,60 @@ __PACKAGE__->table("users_has_devices");
 
 =head1 ACCESSORS
 
-=head2 users_idusers
+=head2 user
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  default_value: 0
+  extra: {unsigned => 1}
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 devices_iddevices
+=head2 device
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  default_value: 0
+  extra: {unsigned => 1}
   is_foreign_key: 1
   is_nullable: 0
 
 =cut
 
 __PACKAGE__->add_columns(
-  "users_idusers",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "devices_iddevices",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "user",
+  {
+    data_type => "bigint",
+    default_value => 0,
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 0,
+  },
+  "device",
+  {
+    data_type => "bigint",
+    default_value => 0,
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 0,
+  },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</users_idusers>
+=item * L</user>
 
-=item * L</devices_iddevices>
+=item * L</device>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("users_idusers", "devices_iddevices");
+__PACKAGE__->set_primary_key("user", "device");
 
 =head1 RELATIONS
 
-=head2 devices_iddevice
+=head2 device
 
 Type: belongs_to
 
@@ -81,13 +97,13 @@ Related object: L<TWS::Schema::Result::Device>
 =cut
 
 __PACKAGE__->belongs_to(
-  "devices_iddevice",
+  "device",
   "TWS::Schema::Result::Device",
-  { iddevices => "devices_iddevices" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { id => "device" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
-=head2 users_iduser
+=head2 user
 
 Type: belongs_to
 
@@ -96,15 +112,15 @@ Related object: L<TWS::Schema::Result::User>
 =cut
 
 __PACKAGE__->belongs_to(
-  "users_iduser",
+  "user",
   "TWS::Schema::Result::User",
-  { idusers => "users_idusers" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { id => "user" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-01 00:27:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wM+CyoGj413yKvB2ARwkQA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 03:19:00
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ObJ7spNdpoLxkVVJBrfjDA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
