@@ -60,9 +60,10 @@ __PACKAGE__->table("photolinks");
   is_nullable: 1
   size: 45
 
-=head2 movies_idmovies
+=head2 movie
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  extra: {unsigned => 1}
   is_foreign_key: 1
   is_nullable: 0
 
@@ -88,8 +89,13 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "mediatype",
   { data_type => "varchar", is_nullable => 1, size => 45 },
-  "movies_idmovies",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "movie",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 0,
+  },
   "thumb",
   { data_type => "varchar", is_nullable => 1, size => 255 },
 );
@@ -123,7 +129,7 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 movies_idmovy
+=head2 movie
 
 Type: belongs_to
 
@@ -132,10 +138,10 @@ Related object: L<TWS::Schema::Result::Movy>
 =cut
 
 __PACKAGE__->belongs_to(
-  "movies_idmovy",
+  "movie",
   "TWS::Schema::Result::Movy",
-  { idmovies => "movies_idmovies" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { id => "movie" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 =head2 urls
@@ -154,8 +160,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 02:32:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g/zJc3BUFhwtFTtwDDTujA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-22 02:19:13
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zDsNDmFWrLC4GcdLEl0eGA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

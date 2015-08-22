@@ -25,8 +25,8 @@ sub longpolling {
 	$self->write_chunk;
 
 	$self->inactivity_timeout(3600);
-	my $cb = $self->events->on($self->stash->{user}->email => sub { $self->write_chunk(pop . $delimiter) });
-	$self->on(finish => sub { shift->events->unsubscribe($self->stash->{user}->email => $cb) });
+	my $cb = $self->app->events->on($self->stash->{user}->email => sub { $self->write_chunk(pop . $delimiter) });
+	$self->on(finish => sub { shift->app->events->unsubscribe($self->stash->{user}->email => $cb) });
 }
 
 sub send_pl {
@@ -44,7 +44,7 @@ sub send_pl {
 		$pl->click;
 		my $pl_data = $pl->data;
 		$pl_data->{extradata} = $extradata if $extradata;
-		$self->events->emit($self->stash->{user}->email => encode_json $pl_data);
+		$self->app->events->emit($self->stash->{user}->email => encode_json $pl_data);
 		$self->minion->enqueue(email => [$self->stash->{user}->email, $pl_data]);
 	}
 	$self->render(json => {sent => $res})
