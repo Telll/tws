@@ -20,9 +20,22 @@ sub create_routes {
 	#$app->websocket("/photolink/:api_key/:auth_key")->to("photolink#wsconnect");
 	#$appcors->cors("/photolink/:api_key/:auth_key");
 
-	$app->post("/user")->to("user#create");
+	$app->post("/user")->to("user#create", "json.validator.schema" => "data://TWS::Schema::Result::User/user.schema.json");
 	$appcors->cors("/user")->to(
 		"cors.methods"	=> "POST",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	my $get_user = $app->under("/user/:user_id")->to("user#get");
+	$get_user->get("/");
+	$get_user->cors("/")->to(
+		"cors.methods"	=> "get",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	$get_user->get("/photolinks")->to(action => "photolinks");
+	$get_user->cors("/photolinks")->to(
+		"cors.methods"	=> "get",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
@@ -41,6 +54,19 @@ sub create_routes {
 	$app->post("/movie")->to("movie#create");
 	$appcors->cors("/movie")->to(
 		"cors.methods"	=> "POST",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	my $get_movies = $app->under("/movie/:movie_id")->to("movie#get");
+	$get_movies->get("/");
+	my $cors_movies = $get_movies->cors("/")->to(
+		"cors.methods"	=> "GET",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	$get_movies->get("/photolinks")->to(action => "photolinks");
+	$get_movies->cors("/photolinks")->to(
+		"cors.methods"	=> "GET",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 

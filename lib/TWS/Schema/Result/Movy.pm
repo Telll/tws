@@ -138,3 +138,20 @@ sub data {
 }
 
 1;
+
+__DATA__
+
+@@ movie.schema.json
+{
+        "title": "Movie",
+        "type": "object",
+        "properties": {
+                "title": {
+                        "type":		"string"
+                },
+                "description": {
+                        "type":		"string"
+                }
+        },
+        "required": ["title"]
+}

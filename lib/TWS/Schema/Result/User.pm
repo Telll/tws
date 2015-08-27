@@ -192,4 +192,35 @@ sub _login {
 	$self->create_related(auths => {auth_key => sha1_hex $seed})
 }
 
+sub data {
+	my $self = shift;
+	{
+		username	=> $self->username,
+		email		=> $self->email,
+	}
+}
+
 1;
+
+__DATA__
+
+@@ user.schema.json
+{
+        "title": "User",
+        "type": "object",
+        "properties": {
+                "username": {
+                        "type":		"string",
+			"minLength":	3
+                },
+                "email": {
+                        "type":		"string",
+			"format":	"email"
+                },
+                "password": {
+                        "type":		"string",
+			"minLength":	5
+                }
+        },
+        "required": ["username", "email", "password"]
+}

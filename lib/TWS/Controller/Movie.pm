@@ -17,4 +17,19 @@ sub create {
 	$self->render(json => {sent => (defined $movie and $movie->id ? \1 : \0)})
 }
 
+sub get {
+	my $self	= shift;
+
+	$self->stash->{got_movie} = $self->resultset("Movy")->find($self->stash->{movie_id});
+	return $self->render(json => $self->stash->{got_movie}->data) if $self->stash->{got_movie};
+	$self->render(json => {error => [{message => "Movie not found"}]}, status => 404);
+	undef
+}
+
+sub photolinks {
+	my $self	= shift;
+	my $movie	= $self->stash->{got_movie};
+	$self->render(json => {photolinks => [map {$_->data} $movie ? $movie->photolinks->all : ()]})
+}
+
 42

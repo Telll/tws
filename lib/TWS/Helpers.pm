@@ -50,8 +50,7 @@ sub create_helpers {
 		my $data	= shift;
 
 		my $movie	= $self->resultset("Movy");
-		use Data::Dumper; print Dumper $data;
-		$movie->create($data);
+		$movie->update_or_create($data);
 	});
 
 	$tws->helper(create_user => sub {
@@ -64,7 +63,7 @@ sub create_helpers {
 			$data->{counter}	= 1024;
 			$data->{password}	= $user->hashfy_password($data->{password}, $data->{counter}, $data->{salt});
 		}
-		$user->create($data);
+		$user->update_or_create($data);
 	});
 
 	$tws->helper("get_photolink" => sub {

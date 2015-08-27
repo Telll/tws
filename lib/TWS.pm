@@ -32,6 +32,7 @@ sub startup {
 	});
 
 	$self->plugin("CORS");
+	$self->plugin("JSON::Validator", auto_validate => "render");
 
 	$self->hook(before_dispatch => sub {
 		my $c = shift;
