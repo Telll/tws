@@ -55,10 +55,12 @@ __PACKAGE__->table("clicks");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 devices_iddevices
+=head2 device
 
-  data_type: 'integer'
-  is_nullable: 0
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_foreign_key: 1
+  is_nullable: 1
 
 =head2 time
 
@@ -66,6 +68,13 @@ __PACKAGE__->table("clicks");
   datetime_undef_if_invalid: 1
   default_value: current_timestamp
   is_nullable: 0
+
+=head2 user
+
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_foreign_key: 1
+  is_nullable: 1
 
 =cut
 
@@ -86,14 +95,26 @@ __PACKAGE__->add_columns(
     is_foreign_key => 1,
     is_nullable => 0,
   },
-  "devices_iddevices",
-  { data_type => "integer", is_nullable => 0 },
+  "device",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 1,
+  },
   "time",
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
     default_value => \"current_timestamp",
     is_nullable => 0,
+  },
+  "user",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 1,
   },
 );
 
@@ -111,6 +132,26 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 device
+
+Type: belongs_to
+
+Related object: L<TWS::Schema::Result::Device>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "device",
+  "TWS::Schema::Result::Device",
+  { id => "device" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
+  },
+);
+
 =head2 photolink
 
 Type: belongs_to
@@ -126,9 +167,29 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
+=head2 user
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 03:19:00
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1aui4LjlQYZ+orCRsprlzg
+Type: belongs_to
+
+Related object: L<TWS::Schema::Result::User>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "user",
+  "TWS::Schema::Result::User",
+  { id => "user" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
+  },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-28 02:47:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TPHODTb7FruE7hFjWEqg8w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -21,7 +21,7 @@ sub create_helpers {
 		my $auth = $self->resultset("Auth")->find({auth_key => $key});
 		if($auth) {
 			$self->stash->{user} = $auth->user;
-			return 1;
+			return $auth;
 		}
 	});
 

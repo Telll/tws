@@ -169,8 +169,12 @@ __PACKAGE__->has_many(
 sub links { shift()->urls }
 
 sub click {
-	my $self = shift;
-	$self->create_related(clicks => {devices_iddevices => 0})
+	my $self	= shift;
+	my $device	= shift;
+	my $user	= shift;
+
+	return if not $device or not $user;
+	$self->create_related(clicks => {device => $device->id, user => $user->id})
 }
 
 sub data {

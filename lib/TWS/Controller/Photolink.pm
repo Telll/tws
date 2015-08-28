@@ -38,10 +38,9 @@ sub send_pl {
 
 	my $pl = $self->get_photolink($movie_id, $plid);
 	my $res = Mojo::JSON->true;
-	if(not $pl) {
+	if(not $pl or not $pl->click($self->stash->{device}, $self->stash->{user})) {
 		$res = Mojo::JSON->false;
 	} else {
-		$pl->click;
 		my $pl_data = $pl->data;
 		$pl_data->{extradata} = $extradata if $extradata;
 		$self->app->events->emit($self->stash->{user}->email => encode_json $pl_data);

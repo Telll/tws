@@ -14,6 +14,9 @@ sub create_routes {
 	$api->post("/login")->to("session#login");
 	$api->cors("/login");
 
+	$api->delete("/login")->to("session#logout");
+	$api->cors("/login");
+
 	my $app = $api->under("/app")->to("session#verify");
 	my $appcors = $api->under("/app");
 

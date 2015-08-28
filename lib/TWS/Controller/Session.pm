@@ -16,6 +16,18 @@ sub login {
 	$self->render(json => {auth_key => $auth->auth_key});
 }
 
+sub logout {
+	my $self	= shift;
+	my $auth_key	= $self->req->headers->header("X-Auth-Key");
+
+	my $deleted = 0;
+	if(my $auth = $self->validate_auth_key($auth_key)) {
+		$auth->delete;
+		$deleted = 1;
+	}
+	return $self->render(json => {logout => \$deleted});
+}
+
 sub verify {
 	my $self = shift;
 

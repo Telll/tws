@@ -13,8 +13,18 @@ sub get {
 	my $self	= shift;
 
 	$self->stash->{got_user} = $self->resultset("User")->find($self->stash->{user_id});
-	return $self->render(json => $self->stash->{got_user}->data) if $self->stash->{got_user};
+	if($self->stash->{got_user}) {
+		$self->render(json => $self->stash->{got_user}->data);
+		return 1
+	}
 	$self->render(json => {error => [{message => "User not found"}]}, status => 404);
+	undef
+}
+
+sub photolinks {
+	my $self	= shift;
+
+	$self->render(json => {photolinks => [map {$_->data} $self->stash->{got_user}->photolinks]})
 }
 
 42

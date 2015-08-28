@@ -151,6 +151,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 clicks
+
+Type: has_many
+
+Related object: L<TWS::Schema::Result::Click>
+
+=cut
+
+__PACKAGE__->has_many(
+  "clicks",
+  "TWS::Schema::Result::Click",
+  { "foreign.user" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 users_has_devices
 
 Type: has_many
@@ -177,8 +192,8 @@ Composing rels: L</users_has_devices> -> device
 __PACKAGE__->many_to_many("devices", "users_has_devices", "device");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-21 03:41:18
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wcbRT1okEyju0PJyKuAKEg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-28 02:47:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ImpUWXU8zKr1v6kS1ZbO/Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -198,6 +213,11 @@ sub data {
 		username	=> $self->username,
 		email		=> $self->email,
 	}
+}
+
+sub photolinks {
+	my $self = shift;
+	map {$_->photolink} $self->clicks
 }
 
 1;

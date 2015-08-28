@@ -99,6 +99,21 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 clicks
+
+Type: has_many
+
+Related object: L<TWS::Schema::Result::Click>
+
+=cut
+
+__PACKAGE__->has_many(
+  "clicks",
+  "TWS::Schema::Result::Click",
+  { "foreign.device" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 users_has_devices
 
 Type: has_many
@@ -125,8 +140,8 @@ Composing rels: L</users_has_devices> -> user
 __PACKAGE__->many_to_many("users", "users_has_devices", "user");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 03:19:00
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:doOj7FCP+723F8DW/SNpNA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-28 02:31:21
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w6UIkupNexBKLkM37ZU5bw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
