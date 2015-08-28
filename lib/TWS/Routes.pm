@@ -54,7 +54,7 @@ sub create_routes {
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
-	$app->post("/movie")->to("movie#create");
+	$app->post("/movie")->to("movie#create", "json.validator.schema" => "data://TWS::Schema::Result::Movy/movie.schema.json");
 	$appcors->cors("/movie")->to(
 		"cors.methods"	=> "POST",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
