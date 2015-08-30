@@ -136,21 +136,6 @@ __PACKAGE__->add_unique_constraint("username", ["username"]);
 
 =head1 RELATIONS
 
-=head2 auths
-
-Type: has_many
-
-Related object: L<TWS::Schema::Result::Auth>
-
-=cut
-
-__PACKAGE__->has_many(
-  "auths",
-  "TWS::Schema::Result::Auth",
-  { "foreign.user" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 clicks
 
 Type: has_many
@@ -166,45 +151,34 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 users_has_devices
+=head2 devices
 
 Type: has_many
 
-Related object: L<TWS::Schema::Result::UsersHasDevice>
+Related object: L<TWS::Schema::Result::Device>
 
 =cut
 
 __PACKAGE__->has_many(
-  "users_has_devices",
-  "TWS::Schema::Result::UsersHasDevice",
+  "devices",
+  "TWS::Schema::Result::Device",
   { "foreign.user" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 devices
 
-Type: many_to_many
-
-Composing rels: L</users_has_devices> -> device
-
-=cut
-
-__PACKAGE__->many_to_many("devices", "users_has_devices", "device");
-
-
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-28 02:47:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ImpUWXU8zKr1v6kS1ZbO/Q
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-30 02:39:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cmkutPTlcUYp2mBBR0uFng
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-use Digest::SHA1  qw(sha1_hex);
+use Mojo::Util qw(sha1_sum);
 my $counter;
 
-sub _login {
-	my $self = shift;
-	my $seed = join " ", localtime time, $self, $$, $counter++, map {int rand() * 10000} 0 .. rand() * 10;
-	$self->create_related(auths => {auth_key => sha1_hex $seed})
+sub generate_token {
+	my $self	= shift;
+	return sha1_sum join " ", localtime time, $self, $$, $counter++, map {int rand() * 10000} 0 .. rand() * 10;
 }
 
 sub data {
@@ -217,7 +191,7 @@ sub data {
 
 sub photolinks {
 	my $self = shift;
-	map {$_->photolink} $self->clicks
+	map {$_->photolink} $self->search_related("devices")->search_related("clicks")->all
 }
 
 1;

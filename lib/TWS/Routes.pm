@@ -42,6 +42,25 @@ sub create_routes {
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
+	$app->post("/device")->to("device#create", "json.validator.schema" => "data://TWS::Schema::Result::Device/device.schema.json");
+	$appcors->cors("/device")->to(
+		"cors.methods"	=> "POST",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	my $get_device = $app->under("/device/:device_id")->to("device#get");
+	$get_device->get("/");
+	$get_device->cors("/")->to(
+		"cors.methods"	=> "get",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	$get_device->get("/photolinks")->to(action => "photolinks");
+	$get_device->cors("/photolinks")->to(
+		"cors.methods"	=> "get",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
 	$app->get("/photolink/lp")->to("photolink#longpolling");
 	$appcors->cors("/photolink/lp")->to(
 		"cors.methods"	=> "GET",

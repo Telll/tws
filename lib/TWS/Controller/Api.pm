@@ -8,8 +8,6 @@ sub validate {
 
 	return 1 if $self->tx->req->method eq "OPTIONS";
 
-	$self->stash->{device} = $self->resultset("Device")->find($device_id);
-
 	if(not $api_key) {
 		$api_key = $self->stash->{api_key};
 	}

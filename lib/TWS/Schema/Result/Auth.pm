@@ -48,17 +48,24 @@ __PACKAGE__->table("auth");
   is_nullable: 0
   size: 255
 
-=head2 time
+=head2 login
 
-  data_type: 'datetime'
+  data_type: 'timestamp'
   datetime_undef_if_invalid: 1
+  default_value: current_timestamp
   is_nullable: 0
 
-=head2 user
+=head2 device
 
   data_type: 'bigint'
   extra: {unsigned => 1}
   is_foreign_key: 1
+  is_nullable: 0
+
+=head2 logout
+
+  data_type: 'datetime'
+  datetime_undef_if_invalid: 1
   is_nullable: 1
 
 =cut
@@ -73,17 +80,24 @@ __PACKAGE__->add_columns(
   },
   "auth_key",
   { data_type => "varchar", is_nullable => 0, size => 255 },
-  "time",
+  "login",
   {
-    data_type => "datetime",
+    data_type => "timestamp",
     datetime_undef_if_invalid => 1,
+    default_value => \"current_timestamp",
     is_nullable => 0,
   },
-  "user",
+  "device",
   {
     data_type => "bigint",
     extra => { unsigned => 1 },
     is_foreign_key => 1,
+    is_nullable => 0,
+  },
+  "logout",
+  {
+    data_type => "datetime",
+    datetime_undef_if_invalid => 1,
     is_nullable => 1,
   },
 );
@@ -118,29 +132,24 @@ __PACKAGE__->add_unique_constraint("id", ["id"]);
 
 =head1 RELATIONS
 
-=head2 user
+=head2 device
 
 Type: belongs_to
 
-Related object: L<TWS::Schema::Result::User>
+Related object: L<TWS::Schema::Result::Device>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "user",
-  "TWS::Schema::Result::User",
-  { id => "user" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "RESTRICT",
-    on_update     => "RESTRICT",
-  },
+  "device",
+  "TWS::Schema::Result::Device",
+  { id => "device" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-20 03:40:15
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:I8BrQkdRRNXx5oRRKjgeog
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-30 03:38:38
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iXUFppk7MYshPVacSxXn3Q
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 

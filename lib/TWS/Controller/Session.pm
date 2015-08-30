@@ -10,10 +10,18 @@ sub login {
 
 	my $password	= $data->{password}	// return $self->render(status => 400, json => {error => "Please provide password."});
 
-	my $auth = $self->user_login($user, $password);
+	my $user = $self->resultset("User")->authenticate($user, $password);
+	$self->stash->{user} = $user;
+
+	if(not $self->stash->{device}) {
+		$self->stash->{device} = $user->create_related(devices => {model => 1})
+	}
+
+	my $auth = $user->generate_token;
+	$self->stash->{device}->create_related(auths => {auth_key => $auth});
 	return $self->render(status => 401, json => {error => "Incorrect username or password."}) if not defined $auth;
 
-	$self->render(json => {auth_key => $auth->auth_key});
+	$self->render(json => {auth_key => $auth});
 }
 
 sub logout {
@@ -22,7 +30,7 @@ sub logout {
 
 	my $deleted = 0;
 	if(my $auth = $self->validate_auth_key($auth_key)) {
-		$auth->delete;
+		$auth->update({logout => \"now()"});
 		$deleted = 1;
 	}
 	return $self->render(json => {logout => \$deleted});

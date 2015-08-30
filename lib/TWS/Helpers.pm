@@ -18,22 +18,12 @@ sub create_helpers {
 		my $self	= shift;
 		my $key		= shift;
 
-		my $auth = $self->resultset("Auth")->find({auth_key => $key});
+		my $auth = $self->resultset("Auth")->find({auth_key => $key, logout => undef});
 		if($auth) {
-			$self->stash->{user} = $auth->user;
+			$self->stash->{device}	= $auth->device;
+			$self->stash->{user}	= $self->stash->{device}->user;
 			return $auth;
 		}
-	});
-
-	$tws->helper(user_login => sub {
-		my $self	= shift;
-		my $username	= shift;
-		my $password	= shift;
-
-		my $user = $self->resultset("User")->authenticate($username, $password);
-		$self->stash->{user} = $user;
-		return $user->_login if $user;
-		undef
 	});
 
 	$tws->helper(get_movie => sub {
@@ -64,14 +54,6 @@ sub create_helpers {
 			$data->{password}	= $user->hashfy_password($data->{password}, $data->{counter}, $data->{salt});
 		}
 		$user->update_or_create($data);
-	});
-
-	$tws->helper("get_photolink" => sub {
-		my $self	= shift;
-		my $movie_id	= shift;
-		my $plid	= shift;
-
-		$self->resultset("Photolink")->find({movies_idmovies => $movie_id, id => $plid});
 	});
 }
 
