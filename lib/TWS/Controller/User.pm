@@ -5,8 +5,23 @@ sub create {
 	my $self	= shift;
 	my $data	= $self->req->json;
 
-	my $user = $self->create_user($data);
-	$self->render(json => {sent => $user->id ? \1 : \0})
+	my $userrs	= $self->resultset("User");
+	if(exists $data->{password}) {
+		$data->{salt}		= $userrs->generate_salt;
+		$data->{counter}	= 1024;
+		$data->{password}	= $userrs->hashfy_password($data->{password}, $data->{counter}, $data->{salt});
+	}
+	my $user = $userrs->update_or_create($data);
+	$self->render(json => {created => $user->id ? \1 : \0, id => $user->id}, status => 201)
+}
+
+sub del {
+	my $self	= shift;
+
+	if($self->stash->{got_user}) {
+		my $deleted = (delete $self->stash->{got_user})->delete;
+		$self->render(json => {deleted => $deleted ? \1 : \0})
+	}
 }
 
 sub get {

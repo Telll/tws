@@ -14,7 +14,16 @@ sub create {
 	my $data	= $self->req->json;
 
 	my $movie = $self->create_movie($data);
-	$self->render(json => {sent => (defined $movie and $movie->id ? \1 : \0)})
+	$self->render(json => {created => (defined $movie and $movie->id ? \1 : \0), id => $movie->id}, status => 201)
+}
+
+sub del {
+	my $self	= shift;
+
+	if($self->stash->{got_movie}) {
+		my $deleted = (delete $self->stash->{got_movie})->delete;
+		$self->render(json => {deleted => $deleted ? \1 : \0})
+	}
 }
 
 sub get {

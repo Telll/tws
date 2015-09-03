@@ -6,22 +6,32 @@ sub login {
 
 	my $data	= $self->req->json	// {};
 
-	my $user	= $data->{user_name}	// return $self->render(status => 400, json => {error => "Please provide username."});
+	my $user_name	= $data->{user_name}	// return $self->render(status => 400, json => {error => "Please provide username."});
 
 	my $password	= $data->{password}	// return $self->render(status => 400, json => {error => "Please provide password."});
 
-	my $user = $self->resultset("User")->authenticate($user, $password);
+	my $model	= $data->{model};
+
+	my $user = $self->resultset("User")->authenticate($user_name, $password);
+	return $self->render(status => 401, json => {error => "Incorrect username or password."}) if not defined $user;
+
 	$self->stash->{user} = $user;
 
-	if(not $self->stash->{device}) {
-		$self->stash->{device} = $user->create_related(devices => {model => 1})
+	if($self->stash->{device_id}) {
+		$self->stash->{device} = $self->resultset("Device")->find($self->stash->{device_id})
+	} elsif(not $self->stash->{device}) {
+		my $dev_model = $self->resultset("DeviceModel")->find({name => $model}) if defined $model;
+		if(not $dev_model or not defined $dev_model->id) {
+			$self->render(json => {error => qq/Device model not found/}, status => 400);
+			return
+		}
+		$self->stash->{device} = $user->create_related(devices => {model => $dev_model->id})
 	}
 
 	my $auth = $user->generate_token;
 	$self->stash->{device}->create_related(auths => {auth_key => $auth});
-	return $self->render(status => 401, json => {error => "Incorrect username or password."}) if not defined $auth;
 
-	$self->render(json => {auth_key => $auth});
+	$self->render(json => {auth_key => $auth, device => $self->stash->{device}->id});
 }
 
 sub logout {

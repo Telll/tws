@@ -35,9 +35,11 @@ __PACKAGE__->table("points");
 
 =head1 ACCESSORS
 
-=head2 idpaths
+=head2 id
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_auto_increment: 1
   is_nullable: 0
 
 =head2 x
@@ -56,17 +58,23 @@ __PACKAGE__->table("points");
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-=head2 idtrackmotions
+=head2 trackmotion
 
-  data_type: 'integer'
+  data_type: 'bigint'
+  extra: {unsigned => 1}
   is_foreign_key: 1
   is_nullable: 0
 
 =cut
 
 __PACKAGE__->add_columns(
-  "idpaths",
-  { data_type => "integer", is_nullable => 0 },
+  "id",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
   "x",
   { data_type => "integer", is_nullable => 1 },
   "y",
@@ -77,25 +85,30 @@ __PACKAGE__->add_columns(
     datetime_undef_if_invalid => 1,
     is_nullable => 1,
   },
-  "idtrackmotions",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "trackmotion",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 0,
+  },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</idpaths>
+=item * L</id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("idpaths");
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 idtrackmotion
+=head2 trackmotion
 
 Type: belongs_to
 
@@ -104,16 +117,26 @@ Related object: L<TWS::Schema::Result::Trackmotion>
 =cut
 
 __PACKAGE__->belongs_to(
-  "idtrackmotion",
+  "trackmotion",
   "TWS::Schema::Result::Trackmotion",
-  { idtrackmotions => "idtrackmotions" },
-  { is_deferrable => 1, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { id => "trackmotion" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-01 00:27:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:D09ewYWvgjGxGKyPmn4p4A
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-03 01:56:59
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MJRqRAggMpflDDppyXogMg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+sub data {
+	my $self = shift;
+	{
+		x	=> $self->x,
+		y	=> $self->y,
+		t	=> $self->t,
+	}
+}
+
 1;

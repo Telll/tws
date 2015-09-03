@@ -11,8 +11,10 @@ sub create_routes {
 		"cors.expose"		=> "X-API-Key, X-Auth-Key",
 	);
 
-	$api->post("/login")->to("session#login");
-	$api->cors("/login");
+	$api->post("/login" => [model => [qw/iPad iPhone/]])->to("session#login");
+	$api->cors("/login" => [model => [qw/ipad iphone/]]);
+	$api->post("/login/:device_id")->to("session#login");
+	$api->cors("/login/:device_id");
 
 	$api->delete("/login")->to("session#logout");
 	$api->cors("/login");
@@ -33,6 +35,12 @@ sub create_routes {
 	$get_user->get("/");
 	$get_user->cors("/")->to(
 		"cors.methods"	=> "get",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	$get_user->delete("/")->to("user#del");
+	$get_user->cors("/")->to(
+		"cors.methods"	=> "delete",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
@@ -80,8 +88,17 @@ sub create_routes {
 	);
 
 	my $get_movies = $app->under("/movie/:movie_id")->to("movie#get");
+	$get_movies->delete("/")->to("movie#del");
 	$get_movies->get("/");
 	my $cors_movies = $get_movies->cors("/")->to(
+		"cors.methods"	=> "GET",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	my $get_track_motion = $app->under("/track_motion/:track_motion_id")->to("track_motion#get");
+	$get_track_motion->delete("/")->to("track_motion#del");
+	$get_track_motion->get("/");
+	my $cors_track_motion = $get_track_motion->cors("/")->to(
 		"cors.methods"	=> "GET",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);

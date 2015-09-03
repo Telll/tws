@@ -42,19 +42,6 @@ sub create_helpers {
 		my $movie	= $self->resultset("Movy");
 		$movie->update_or_create($data);
 	});
-
-	$tws->helper(create_user => sub {
-		my $self	= shift;
-		my $data	= shift;
-
-		my $user	= $self->resultset("User");
-		if(exists $data->{password}) {
-			$data->{salt}		= $user->generate_salt;
-			$data->{counter}	= 1024;
-			$data->{password}	= $user->hashfy_password($data->{password}, $data->{counter}, $data->{salt});
-		}
-		$user->update_or_create($data);
-	});
 }
 
 42

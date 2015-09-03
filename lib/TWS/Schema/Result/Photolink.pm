@@ -159,6 +159,21 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
+=head2 trackmotions
+
+Type: has_many
+
+Related object: L<TWS::Schema::Result::Trackmotion>
+
+=cut
+
+__PACKAGE__->has_many(
+  "trackmotions",
+  "TWS::Schema::Result::Trackmotion",
+  { "foreign.photolink" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 urls
 
 Type: has_many
@@ -175,8 +190,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-30 04:37:17
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2UvnhvJTcu0PnjjyWQD7jw
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-03 01:56:59
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ATvvAEUPK3kZGJYovk0LMA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
