@@ -54,9 +54,8 @@ __PACKAGE__->table("points");
 
 =head2 t
 
-  data_type: 'datetime'
-  datetime_undef_if_invalid: 1
-  is_nullable: 1
+  data_type: 'double precision'
+  is_nullable: 0
 
 =head2 trackmotion
 
@@ -80,11 +79,7 @@ __PACKAGE__->add_columns(
   "y",
   { data_type => "integer", is_nullable => 1 },
   "t",
-  {
-    data_type => "datetime",
-    datetime_undef_if_invalid => 1,
-    is_nullable => 1,
-  },
+  { data_type => "double precision", is_nullable => 0 },
   "trackmotion",
   {
     data_type => "bigint",
@@ -124,8 +119,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-03 01:56:59
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MJRqRAggMpflDDppyXogMg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-05 03:03:36
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZIiD4n8YZzQS4R/cpIw2/g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

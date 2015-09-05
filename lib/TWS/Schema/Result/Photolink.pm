@@ -226,3 +226,34 @@ sub data {
 }
 
 1;
+
+__DATA__
+
+@@ photolink.schema.json
+
+{
+	"title": "Example Schema",
+	"type": "object",
+	"required": ["title", "description", "movie"],
+	"properties": {
+		"title": {
+			"type": "string",
+			"maxLength": 45
+		},
+		"description":	{
+			"type": "string",
+			"maxLength": 255
+		},
+		"mediatype":	{
+			"type": "string",
+			"maxLength": 45
+		},
+		"movie":	{
+			"type": "integer"
+		},
+		"thumb":	{
+			"type": "string",
+			"maxLength": 255
+		}
+	}
+}

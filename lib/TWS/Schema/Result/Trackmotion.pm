@@ -129,3 +129,36 @@ sub data {
 }
 
 1;
+
+
+__DATA__
+
+@@ trackmotion.schema.json
+
+{
+	"title": "Track Motion",
+	"type": "array",
+	"items": {
+		"title": "point",
+		"type": "object",
+		"required": ["x", "y", "t"],
+		"properties": {
+			"x":	{
+				"type":	"number",
+				"minimum": 0
+			},
+			"y":	{
+				"type":	"number",
+				"minimum": 0
+			},
+			"z":	{
+				"type":	"number",
+				"minimum": 0
+			},
+			"t":	{
+				"type":	"number",
+				"minimum": 0
+			}
+		}
+	}
+}
