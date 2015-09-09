@@ -12,6 +12,10 @@ sub login {
 
 	my $model	= $data->{model};
 
+	if(not defined $model and not exists $self->stash->{device_id}) {
+		return $self->render(status => 400, json => {error => "Please provide a model name."});
+	}
+
 	my $user = $self->resultset("User")->authenticate($user_name, $password);
 	return $self->render(status => 401, json => {error => "Incorrect username or password."}) if not defined $user;
 

@@ -12,8 +12,10 @@ sub authenticate {
 	my $password	= shift;
 
 	my $user_obj	= $self->find({username => $user});
+	return if not defined $user_obj;
 	my $hpwd	= $self->hashfy_password($password, $user_obj->counter, $user_obj->salt);
-	return $user_obj if $hpwd eq $user_obj->password
+	return $user_obj if $hpwd eq $user_obj->password;
+	undef
 }
 
 sub hashfy_password {
