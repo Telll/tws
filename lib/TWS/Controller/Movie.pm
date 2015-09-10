@@ -13,8 +13,10 @@ sub create {
 	my $self	= shift;
 	my $data	= $self->req->json;
 
-	my $movie = $self->create_movie($data);
-	$self->render(json => {created => (defined $movie and $movie->id ? \1 : \0), id => $movie->id}, status => 201)
+	my $movie = $self->resultset("Movy")->update_or_create($data);
+	return $self->render(json => {created => \1, id => $movie->id}, status => 201) if defined $movie;
+	$self->render(json => {created => \0}, status => 201)
+
 }
 
 sub del {

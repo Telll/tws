@@ -82,7 +82,6 @@ $t->post_ok('/login',
 ;
 
 
-## Login device id
 $t->post_ok('/login',
 	{"X-API-Key" => "1234"},
 	json => {
@@ -99,6 +98,7 @@ $t->post_ok('/login',
 my $token = $t->tx->res->json->{auth_key};
 my $device = $t->tx->res->json->{device};
 
+## Login device id
 $t->post_ok("/login/$device",
 	{"X-API-Key" => "1234"},
 	json => {

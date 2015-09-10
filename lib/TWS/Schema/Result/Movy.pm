@@ -98,6 +98,20 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<title>
+
+=over 4
+
+=item * L</title>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("title", ["title"]);
+
 =head1 RELATIONS
 
 =head2 photolinks
@@ -116,8 +130,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-22 02:19:13
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TDL9pwz/U9VuOANRZDw/8A
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-10 03:48:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2DAXF9Alz/JACRDWTmp4eg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -147,10 +161,12 @@ __DATA__
         "type": "object",
         "properties": {
                 "title": {
-                        "type":		"string"
+                        "type":		"string",
+			"maxLength":	45
                 },
                 "description": {
-                        "type":		"string"
+                        "type":		"string",
+			"maxLength":	255
                 }
         },
         "required": ["title"]
