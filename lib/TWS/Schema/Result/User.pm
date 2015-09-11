@@ -205,7 +205,8 @@ __DATA__
         "properties": {
                 "username": {
                         "type":		"string",
-			"minLength":	3
+			"minLength":	3,
+			"maxLength":	255
                 },
                 "email": {
                         "type":		"string",
