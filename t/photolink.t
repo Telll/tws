@@ -161,22 +161,44 @@ $t->post_ok('/app/photolink',
 	->json_is("/errors/0/path"	=> "/thumb")
 ;
 
+my $pl = {
+	mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
+	movie		=> 0,
+	title		=> 'Re tukeku go at.',
+	thumb		=> 'http://rutek.edu/isunop.jpg',
+	description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
+};
+
 $t->post_ok('/app/photolink',
 	{
 		"X-API-Key"	=> "1234",
 		"X-Auth-Key"	=> $token,
 	},
-	json => {
-		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
-		movie		=> 0,
-		title		=> 'Re tukeku go at.',
-		thumb		=> 'http://rutek.edu/isunop.jpg',
-		description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
-	}
+	json => $pl,
 )
 	->status_is(200)
 	->json_has("/id"	=> qr/^\d+$/)
 	->json_is("/created"	=> 1)
+;
+
+my $plid = $t->tx->res->json->{id};
+
+$t->get_ok("/app/photolink/$plid",
+	{
+		"X-Auth-Key"	=> "c6d55a1fedffc7aac357e521f8668a8ce820eb87",
+		"X-API-Key"	=> "123",
+	}
+)
+	->status_is(200)
+	->json_has('/sponsor')
+	->json_has('/category')
+	->json_is('/thumb' => $pl->{thumb})
+	->json_has('/id' => qr/^\d+$/)
+	->json_has('/role')
+	->json_is('/description' => $pl->{description})
+	->json_has('/media/type')
+	->json_has('/media/url')
+	->json_is('/title' => $pl->{title})
 ;
 
 done_testing();
