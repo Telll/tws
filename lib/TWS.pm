@@ -54,7 +54,7 @@ sub startup {
 
 	TWS::Helpers::create_helpers($self);
 
-	$self->minion->add_task(email => TWS::Minion::Email::send_mail());
+	$self->minion->add_task(email => \&TWS::Minion::Email::send_mail);
 
 	#$self->mode('production');
 
