@@ -201,4 +201,50 @@ $t->get_ok("/app/photolink/$plid",
 	->json_is('/title' => $pl->{title})
 ;
 
+$t->post_ok("/app/photolink/$plid/track_motion",
+	{
+		"X-Auth-Key"	=> "c6d55a1fedffc7aac357e521f8668a8ce820eb87",
+		"X-API-Key"	=> "123",
+	},
+	json => [
+		{
+			x	=> "str",
+			y	=> 2.0,
+			t	=> 1
+		},
+		{
+			x	=> 2.0,
+			y	=> 3.0,
+			t	=> 1.1
+		}
+	]
+)
+	->status_is(400)
+	->json_is('/errors/0/path' => '/0/x')
+	->json_is('/errors/0/message' => 'Expected number - got string.')
+;
+
+$t->post_ok("/app/photolink/$plid/track_motion",
+	{
+		"X-Auth-Key"	=> "c6d55a1fedffc7aac357e521f8668a8ce820eb87",
+		"X-API-Key"	=> "123",
+	},
+	json => [
+		{
+			x	=> 1.0,
+			y	=> 2.0,
+			t	=> 1
+		},
+		{
+			x	=> 2.0,
+			y	=> 3.0,
+			t	=> 1.1
+		}
+	]
+)
+	->status_is(200)
+	->json_is('/created' => '1')
+	->json_has('/id' => qr/^\d+$/)
+;
+
 done_testing();
