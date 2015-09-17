@@ -185,7 +185,7 @@ my $plid = $t->tx->res->json->{id};
 
 $t->get_ok("/app/photolink/$plid",
 	{
-		"X-Auth-Key"	=> "c6d55a1fedffc7aac357e521f8668a8ce820eb87",
+		"X-Auth-Key"	=> $token,
 		"X-API-Key"	=> "123",
 	}
 )
@@ -203,7 +203,7 @@ $t->get_ok("/app/photolink/$plid",
 
 $t->post_ok("/app/photolink/$plid/track_motion",
 	{
-		"X-Auth-Key"	=> "c6d55a1fedffc7aac357e521f8668a8ce820eb87",
+		"X-Auth-Key"	=> $token,
 		"X-API-Key"	=> "123",
 	},
 	json => [
@@ -226,7 +226,7 @@ $t->post_ok("/app/photolink/$plid/track_motion",
 
 $t->post_ok("/app/photolink/$plid/track_motion",
 	{
-		"X-Auth-Key"	=> "c6d55a1fedffc7aac357e521f8668a8ce820eb87",
+		"X-Auth-Key"	=> $token,
 		"X-API-Key"	=> "123",
 	},
 	json => [
@@ -245,6 +245,32 @@ $t->post_ok("/app/photolink/$plid/track_motion",
 	->status_is(200)
 	->json_is('/created' => '1')
 	->json_has('/id' => qr/^\d+$/)
+;
+
+my $tid = $t->tx->res->json->{id};
+
+$t->get_ok("/app/track_motion/$tid?include=photolink",
+	{
+		"X-Auth-Key"	=> $token,
+		"X-API-Key"	=> "123",
+	}
+)
+	->status_is(200)
+	->json_is('/photolink/sponsor' => 'NYI')
+	->json_is('/photolink/role' => 'NYI')
+	->json_is('/photolink/category' => 'NYI')
+	->json_is('/photolink/title' => 'Re tukeku go at.')
+	->json_is('/photolink/description' => 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.')
+	->json_is('/photolink/media/url' => 'http://rutek.edu/isunop.jpg')
+	->json_is('/photolink/media/type' => 'jpg')
+	->json_is('/photolink/id' => $plid)
+	->json_is('/photolink/thumb' => 'http://rutek.edu/isunop.jpg')
+	->json_is('/points/0/x' => 1)
+	->json_is('/points/0/y' => 2)
+	->json_is('/points/0/t' => 1)
+	->json_is('/points/1/x' => 2)
+	->json_is('/points/1/y' => 3)
+	->json_is('/points/1/t' => 1.1)
 ;
 
 done_testing();

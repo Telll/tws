@@ -17,7 +17,7 @@ sub get {
 
 	$self->stash->{got_track_motion} = $self->resultset("Trackmotion")->find($self->stash->{track_motion_id});
 	if($self->stash->{got_track_motion}) {
-		$self->render(json => $self->stash->{got_track_motion}->data);
+		$self->render(json => $self->stash->{got_track_motion}->data($self->req->query_params->every_param("include")));
 		return 1
 	}
 	$self->render(json => {error => [{message => "TrackMotion not found"}]}, status => 404);

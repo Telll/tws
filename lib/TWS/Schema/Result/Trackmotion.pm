@@ -120,11 +120,12 @@ __PACKAGE__->has_many(
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
 sub data {
-	my $self = shift;
+	my $self	= shift;
+	my $show_pl	= map {(split /\./, $_, 2)[1]} grep {/^photolink\b/} @{ shift() };
 
 	{
 		points		=> [ map {$_->data} $self->points ],
-		photolink	=> $self->photolink->id
+		photolink	=> (defined $show_pl ? $self->photolink->data($show_pl) : $self->photolink->id)
 	}
 }
 
