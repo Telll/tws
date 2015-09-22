@@ -24,4 +24,16 @@ sub get {
 	undef
 }
 
+sub add_point {
+	my $self	= shift;
+	my $track_id	= $self->stash->{track_motion_id};
+	my $data	= $self->req->json;
+
+	my $track = $self->resultset("Trackmotion")->find($track_id);
+	$track->create_related(points => $data);
+	my $movie_id = $track->photolink->movie->id;
+
+	$self->app->events->emit("trackmotion $movie_id" => $track_id);
+}
+
 42

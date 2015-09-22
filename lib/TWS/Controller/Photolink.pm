@@ -1,23 +1,14 @@
 package TWS::Controller::Photolink;
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::JSON qw(decode_json encode_json);
-use TWS::WSCommands;
+
+use TWS::Controller::Api;
+use TWS::Controller::Session;
 
 my $delimiter = "$///" . ("-" x 10) . "//";
 
-my $clients = TWS::WSCommands->new($delimiter);
-
-sub connectws {
-	my $self	= shift;
-	$clients->add($self->stash->{user}, $self);
-
-	$self->on(message => sub {
-		my $self	= shift;
-		my $msg		= shift;
-
-		my $cmd = decode_json $msg;
-	});
-}
+my $api		= TWS::Controller::Api->new;
+my $session	= TWS::Controller::Session->new;
 
 sub create {
 	my $self	= shift;
@@ -48,7 +39,7 @@ sub longpolling {
 	my $device	= $self->stash->{device};
 	my $photolinkrs	= $self->resultset("Photolink");
 	my $c = $self;
-	my $cb = $self->app->events->on($self->stash->{user}->id => sub {
+	my $cb = $self->app->events->on("photolink " . $self->stash->{user}->id => sub {
 		my $self	= shift;
 		my $photolink	= shift;
 		my $extradata	= shift;
@@ -69,7 +60,7 @@ sub click {
 	my $json	= $self->req->json;
 	my $extradata	= $json->{extradata} if $json;
 
-	$self->app->events->emit($self->stash->{user}->id => $photolink, $extradata);
+	$self->app->events->emit("photolink " . $self->stash->{user}->id => $photolink, $extradata);
 	$self->render(json => {sent => \1})
 }
 

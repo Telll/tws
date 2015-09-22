@@ -3,10 +3,9 @@ use Mojo::Base 'Mojolicious::Controller';
 
 sub validate {
 	my $self	= shift;
-	my $api_key	= $self->req->headers->header("X-API-Key");
-	my $device_id	= $self->req->headers->header("X-Device-ID");
+	my $api_key	= shift // $self->req->headers->header("X-API-Key");
 
-	return 1 if $self->tx->req->method eq "OPTIONS";
+	return 1 if defined $self->tx and $self->tx->req->method eq "OPTIONS";
 
 	if(not $api_key) {
 		$api_key = $self->stash->{api_key};

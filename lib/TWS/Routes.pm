@@ -2,6 +2,8 @@ package TWS::Routes;
 
 sub create_routes {
 	my $r = shift;
+	$r->websocket("/ws")->to("web_socket#ws");
+
 
 	my $api = $r->under("/")->to(
 		"api#validate",
@@ -21,9 +23,6 @@ sub create_routes {
 
 	my $app = $api->under("/app")->to("session#verify");
 	my $appcors = $api->under("/app");
-
-	#$app->websocket("/photolink/:api_key/:auth_key")->to("photolink#wsconnect");
-	#$appcors->cors("/photolink/:api_key/:auth_key");
 
 	$app->post("/user")->to("user#create", "json.validator.schema" => "data://TWS::Schema::Result::User/user.schema.json");
 	$appcors->cors("/user")->to(
@@ -104,6 +103,11 @@ sub create_routes {
 	$get_track_motion->get("/");
 	my $cors_track_motion = $get_track_motion->cors("/")->to(
 		"cors.methods"	=> "GET",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+	);
+	$get_track_motion->post("/point")->to("track_motion#add_point", "json.validator.schema" => "data://TWS::Schema::Result::Point/point.schema.json");
+	$get_track_motion->cors("/point")->to(
+		"cors.methods"	=> "POST",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key",
 	);
 

@@ -51,9 +51,9 @@ sub logout {
 }
 
 sub verify {
-	my $self = shift;
+	my $self	= shift;
+	my $auth_key	= shift // $self->req->headers->header("X-Auth-Key");
 
-	my $auth_key		= $self->req->headers->header("X-Auth-Key");
 	if(not $auth_key) {
 		$auth_key = $self->stash->{auth_key};
 	}

@@ -121,7 +121,8 @@ __PACKAGE__->has_many(
 
 sub data {
 	my $self	= shift;
-	my $show_pl	= map {(split /\./, $_, 2)[1]} grep {/^photolink\b/} @{ shift() };
+	my $include	= shift;
+	my $show_pl	= map {(split /\./, $_, 2)[1]} grep {/^photolink\b/} @{ $include } if $include;
 
 	{
 		points		=> [ map {$_->data} $self->points ],
