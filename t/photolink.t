@@ -27,25 +27,7 @@ $t->post_ok('/app/photolink',
 	},
 	json => {
 		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
-		title		=> 'Re tukeku go at.',
-		thumb		=> 'http://rutek.edu/isunop.jpg',
-		description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
-	}
-)
-	->status_is(400)
-	->json_is("/errors/0/message"	=> "Missing property.")
-	->json_is("/errors/0/path"	=> "/movie")
-;
-
-$t->post_ok('/app/photolink',
-	{
-		"X-API-Key"	=> "1234",
-		"X-Auth-Key"	=> $token,
-	},
-	json => {
-		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
 		movie		=> 0,
-		thumb		=> 'http://rutek.edu/isunop.jpg',
 		description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
 	}
 )
@@ -63,7 +45,6 @@ $t->post_ok('/app/photolink',
 		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
 		movie		=> 0,
 		title		=> 'Re tukeku go at.',
-		thumb		=> 'http://rutek.edu/isunop.jpg',
 	}
 )
 	->status_is(400)
@@ -78,27 +59,8 @@ $t->post_ok('/app/photolink',
 	},
 	json => {
 		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
-		movie		=> 'str',
-		title		=> 'Re tukeku go at.',
-		thumb		=> 'http://rutek.edu/isunop.jpg',
-		description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
-	}
-)
-	->status_is(400)
-	->json_is("/errors/0/message"	=> "Expected integer - got string.")
-	->json_is("/errors/0/path"	=> "/movie")
-;
-
-$t->post_ok('/app/photolink',
-	{
-		"X-API-Key"	=> "1234",
-		"X-Auth-Key"	=> $token,
-	},
-	json => {
-		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
 		movie		=> 0,
 		title		=> 'x' x 100,
-		thumb		=> 'http://rutek.edu/isunop.jpg',
 		description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
 	}
 )
@@ -116,7 +78,6 @@ $t->post_ok('/app/photolink',
 		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
 		movie		=> 0,
 		title		=> 'Re tukeku go at.',
-		thumb		=> 'http://rutek.edu/isunop.jpg',
 		description	=> 'x' x 500,
 	}
 )
@@ -134,7 +95,6 @@ $t->post_ok('/app/photolink',
 		mediatype	=> 'x' x 50,
 		movie		=> 0,
 		title		=> 'Re tukeku go at.',
-		thumb		=> 'http://rutek.edu/isunop.jpg',
 		description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
 	}
 )
@@ -143,29 +103,9 @@ $t->post_ok('/app/photolink',
 	->json_is("/errors/0/path"	=> "/mediatype")
 ;
 
-$t->post_ok('/app/photolink',
-	{
-		"X-API-Key"	=> "1234",
-		"X-Auth-Key"	=> $token,
-	},
-	json => {
-		mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
-		movie		=> 0,
-		title		=> 'Re tukeku go at.',
-		thumb		=> 'x' x 500,
-		description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
-	}
-)
-	->status_is(400)
-	->json_is("/errors/0/message"	=> "String is too long: 500/255.")
-	->json_is("/errors/0/path"	=> "/thumb")
-;
-
 my $pl = {
 	mediatype	=> 'sDpoU7FhjCVcUKgdr7DKyHlXeKEMJKhA',
-	movie		=> 0,
 	title		=> 'Re tukeku go at.',
-	thumb		=> 'http://rutek.edu/isunop.jpg',
 	description	=> 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.'
 };
 
@@ -192,12 +132,9 @@ $t->get_ok("/app/photolink/$plid",
 	->status_is(200)
 	->json_has('/sponsor')
 	->json_has('/category')
-	->json_is('/thumb' => $pl->{thumb})
 	->json_has('/id' => qr/^\d+$/)
 	->json_has('/role')
 	->json_is('/description' => $pl->{description})
-	->json_has('/media/type')
-	->json_has('/media/url')
 	->json_is('/title' => $pl->{title})
 ;
 
@@ -261,10 +198,7 @@ $t->get_ok("/app/track_motion/$tid?include=photolink",
 	->json_is('/photolink/category' => 'NYI')
 	->json_is('/photolink/title' => 'Re tukeku go at.')
 	->json_is('/photolink/description' => 'Vudcu vol dafegjoz giwu bakodaj tapagzaz emi ru ep jagud so alavun palgoin uvoru zop.')
-	->json_is('/photolink/media/url' => 'http://rutek.edu/isunop.jpg')
-	->json_is('/photolink/media/type' => 'jpg')
 	->json_is('/photolink/id' => $plid)
-	->json_is('/photolink/thumb' => 'http://rutek.edu/isunop.jpg')
 	->json_is('/points/0/x' => 1)
 	->json_is('/points/0/y' => 2)
 	->json_is('/points/0/t' => 1)

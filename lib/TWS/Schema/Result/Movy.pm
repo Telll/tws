@@ -114,24 +114,24 @@ __PACKAGE__->add_unique_constraint("title", ["title"]);
 
 =head1 RELATIONS
 
-=head2 photolinks
+=head2 trackmotions
 
 Type: has_many
 
-Related object: L<TWS::Schema::Result::Photolink>
+Related object: L<TWS::Schema::Result::Trackmotion>
 
 =cut
 
 __PACKAGE__->has_many(
-  "photolinks",
-  "TWS::Schema::Result::Photolink",
+  "trackmotions",
+  "TWS::Schema::Result::Trackmotion",
   { "foreign.movie" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-10 03:48:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2DAXF9Alz/JACRDWTmp4eg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-23 02:12:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:SXyiPXPsQb/F6FDpcD3lmQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

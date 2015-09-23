@@ -119,16 +119,16 @@ $t->get_ok("/app/movie/$movie_id/photolinks",
 	}
 )
 	->status_is(200)
-	->json_has("/photolinks/0/role")
-	->json_has("/photolinks/0/media")
-	->json_has("/photolinks/0/media/url")
-	->json_has("/photolinks/0/media/type")
-	->json_has("/photolinks/0/sponsor")
-	->json_has("/photolinks/0/category")
+	->json_has("/photolinks/0/photolink/role")
+	#->json_has("/photolinks/0/media")
+	#->json_has("/photolinks/0/media/url")
+	#->json_has("/photolinks/0/media/type")
 	->json_has("/photolinks/0/thumb")
-	->json_has("/photolinks/0/id")
-	->json_has("/photolinks/0/description")
-	->json_has("/photolinks/0/title")
+	->json_has("/photolinks/0/photolink/sponsor")
+	->json_has("/photolinks/0/photolink/category")
+	->json_has("/photolinks/0/photolink/id")
+	->json_has("/photolinks/0/photolink/description")
+	->json_has("/photolinks/0/photolink/title")
 ;
 
 done_testing();

@@ -40,7 +40,7 @@ sub get {
 sub photolinks {
 	my $self	= shift;
 	my $movie	= $self->stash->{got_movie};
-	$self->render(json => {photolinks => [map {$_->data} $movie ? $movie->photolinks->all : ()]})
+	$self->render(json => {photolinks => [map {{photolink => $_->photolink->data, thumb => $_->thumb}} $movie ? $movie->trackmotions->all : ()]})
 }
 
 42

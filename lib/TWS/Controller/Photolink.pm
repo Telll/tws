@@ -37,31 +37,22 @@ sub longpolling {
 
 	$self->inactivity_timeout(3600);
 	my $device	= $self->stash->{device};
-	my $photolinkrs	= $self->resultset("Photolink");
 	my $c = $self;
-	my $cb = $self->app->events->on("photolink " . $self->stash->{user}->id => sub {
+	my $event = "click " . $self->stash->{user}->id;
+	my $cb = $self->app->events->on($event => sub {
 		my $self	= shift;
-		my $photolink	= shift;
-		my $extradata	= shift;
+		my $trackmotion	= shift;
 
-		if($photolink) {
-			$device->update_or_create_related(device_photolinks => {photolink => $photolink->id});
-			my $pldata = $photolink->data;
-			$pldata->{extradata} = $extradata;
-			$c->write_chunk(encode_json($pldata) . $delimiter);
+		if($trackmotion) {
+			$device->update_or_create_related(device_photolinks => {photolink => $trackmotion->photolink->id});
+			$c->write_chunk(encode_json({
+				photolink	=> $trackmotion->photolink->data,
+				thumb		=> $trackmotion->thumb,
+				movie_id	=> $trackmotion->movie->id
+			}) . $delimiter);
 		}
 	});
-	$self->on(finish => sub { shift->app->events->unsubscribe($self->stash->{user}->id => $cb) });
-}
-
-sub click {
-	my $self	= shift;
-	my $photolink	= $self->stash->{got_photolink};
-	my $json	= $self->req->json;
-	my $extradata	= $json->{extradata} if $json;
-
-	$self->app->events->emit("photolink " . $self->stash->{user}->id => $photolink, $extradata);
-	$self->render(json => {sent => \1})
+	$self->on(finish => sub { shift->app->events->unsubscribe($event => $cb) });
 }
 
 42

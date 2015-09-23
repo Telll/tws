@@ -91,16 +91,16 @@ sub create_routes {
 	$app->post("/photolink/")->to("photolink#create", "json.validator.schema" => "data://TWS::Schema::Result::Photolink/photolink.schema.json");
 	my $get_pl = $app->under("/photolink/:photolink_id")->to("photolink#get");
 	$get_pl->get("/");
-	$get_pl->post("/click")->to("photolink#click");
-	$get_pl->cors("/click")->to(
-		"cors.methods"	=> "POST",
-		"cors.headers"	=> "X-API-Key, X-Auth-Key",
-	);
 
 	$get_pl->post("/track_motion")->to("track_motion#create", "json.validator.schema" => "data://TWS::Schema::Result::Trackmotion/trackmotion.schema.json");
 	my $get_track_motion = $app->under("/track_motion/:track_motion_id")->to("track_motion#get");
 	$get_track_motion->delete("/")->to("track_motion#del");
 	$get_track_motion->get("/");
+	$get_track_motion->post("/click")->to("track_motion#click");
+	$get_track_motion->cors("/click")->to(
+		"cors.methods"	=> "POST",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+	);
 	my $cors_track_motion = $get_track_motion->cors("/")->to(
 		"cors.methods"	=> "GET",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key",

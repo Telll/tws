@@ -60,19 +60,6 @@ __PACKAGE__->table("photolinks");
   is_nullable: 1
   size: 45
 
-=head2 movie
-
-  data_type: 'bigint'
-  extra: {unsigned => 1}
-  is_foreign_key: 1
-  is_nullable: 0
-
-=head2 thumb
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 255
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -89,15 +76,6 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "mediatype",
   { data_type => "varchar", is_nullable => 1, size => 45 },
-  "movie",
-  {
-    data_type => "bigint",
-    extra => { unsigned => 1 },
-    is_foreign_key => 1,
-    is_nullable => 0,
-  },
-  "thumb",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
 );
 
 =head1 PRIMARY KEY
@@ -144,21 +122,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 movie
-
-Type: belongs_to
-
-Related object: L<TWS::Schema::Result::Movy>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "movie",
-  "TWS::Schema::Result::Movy",
-  { id => "movie" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
-);
-
 =head2 trackmotions
 
 Type: has_many
@@ -190,8 +153,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-03 01:56:59
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ATvvAEUPK3kZGJYovk0LMA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-23 02:12:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KaPQ4n0k2eT98Gb1Gm6oSA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -214,13 +177,13 @@ sub data {
 		category	=> "NYI",
 		title		=> $self->title,
 		description	=> $self->description,
-		thumb		=> $self->thumb,
+		#thumb		=> $self->thumb,
 		role		=> "NYI",
 		sponsor		=> "NYI",
-		media		=> {
-			type		=> "jpg",
-			url		=> $self->thumb,
-		},
+		#media		=> {
+		#	type		=> "jpg",
+		#	url		=> $self->thumb,
+		#},
 		link		=> [ map {$_->data} $self->links->all ]
 	}
 }
@@ -247,13 +210,6 @@ __DATA__
 		"mediatype":	{
 			"type": "string",
 			"maxLength": 45
-		},
-		"movie":	{
-			"type": "integer"
-		},
-		"thumb":	{
-			"type": "string",
-			"maxLength": 255
 		}
 	}
 }

@@ -49,6 +49,19 @@ __PACKAGE__->table("trackmotions");
   is_auto_increment: 1
   is_nullable: 0
 
+=head2 thumb
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 255
+
+=head2 movie
+
+  data_type: 'bigint'
+  extra: {unsigned => 1}
+  is_foreign_key: 1
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -66,6 +79,15 @@ __PACKAGE__->add_columns(
     is_auto_increment => 1,
     is_nullable => 0,
   },
+  "thumb",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
+  "movie",
+  {
+    data_type => "bigint",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 0,
+  },
 );
 
 =head1 PRIMARY KEY
@@ -81,6 +103,21 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
+
+=head2 movie
+
+Type: belongs_to
+
+Related object: L<TWS::Schema::Result::Movy>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "movie",
+  "TWS::Schema::Result::Movy",
+  { id => "movie" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+);
 
 =head2 photolink
 
@@ -113,16 +150,16 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-03 01:56:59
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wvwy4uLMwlNTQUjK8oYhyQ
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-23 02:12:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RVSXFz6ApmbomOB5d9iYKw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
 sub data {
 	my $self	= shift;
-	my $include	= shift;
-	my $show_pl	= map {(split /\./, $_, 2)[1]} grep {/^photolink\b/} @{ $include } if $include;
+	my @include	= @_;
+	my $show_pl	= map {(split /\./, $_, 2)[1]} grep {/^photolink\b/} @include if @include;
 
 	{
 		points		=> [ map {$_->data} $self->points ],
@@ -139,27 +176,38 @@ __DATA__
 
 {
 	"title": "Track Motion",
-	"type": "array",
-	"items": {
-		"title": "point",
-		"type": "object",
-		"required": ["x", "y", "t"],
-		"properties": {
-			"x":	{
-				"type":	"number",
-				"minimum": 0
-			},
-			"y":	{
-				"type":	"number",
-				"minimum": 0
-			},
-			"z":	{
-				"type":	"number",
-				"minimum": 0
-			},
-			"t":	{
-				"type":	"number",
-				"minimum": 0
+	"type": "object",
+	"required": ["movie"],
+	"properties": {
+		"movie": {
+			"title":	"Movie ID",
+			"type":		"integer",
+			"minimum":	0
+		},
+		"points": {
+			"type": "array",
+			"items": {
+				"title": "point",
+				"type": "object",
+				"required": ["x", "y", "t"],
+				"properties": {
+					"x":	{
+						"type":	"number",
+						"minimum": 0
+					},
+					"y":	{
+						"type":	"number",
+						"minimum": 0
+					},
+					"z":	{
+						"type":	"number",
+						"minimum": 0
+					},
+					"t":	{
+						"type":	"number",
+						"minimum": 0
+					}
+				}
 			}
 		}
 	}
