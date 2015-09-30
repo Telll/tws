@@ -5,6 +5,7 @@ use TWS::Routes;
 use TWS::Helpers;
 use TWS::Minion::Email;
 use Mojo::EventEmitter;
+use Mojo::Util qw/dumper/;
 
 has schema => sub {
 	my $self = shift;
@@ -22,6 +23,38 @@ has events => sub {
 
 sub startup {
 	my $self = shift;
+
+	my $cmds = $self->plugin(CommandWS => {path => "/ws"});
+	my $authenticated = $cmds
+		->type("SUBSCRIBE")
+		->schema({
+			type		=> "object",
+			required	=> [qw/auth_key api_key/],
+			properties	=> {
+				auth_key	=> {type => "string"},
+				api_key		=> {type => "string"},
+			}
+		})
+		->conditional(sub {shift()->validate_api_key(shift()->data->{api_key})})
+		->conditional(sub {shift()->validate_auth_key(shift()->data->{auth_key})})
+	;
+	$authenticated
+		->command(photolink => sub {
+			shift()->subscribe_photolink(shift())
+		})
+	;
+	$authenticated
+		->schema({
+			type		=> "object",
+			required	=> [qw/movie_id/],
+			properties	=> {
+				movie_id	=> {type => "integer"},
+			}
+		})
+		->command(trackmotion => sub {
+			shift()->subscribe_trackmotion(shift())
+		})
+	;
 
 	$self->plugin(SecureCORS => {
 		"cors.origin"		=> "*",

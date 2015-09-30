@@ -8,6 +8,7 @@ sub create_helpers {
 	$tws->helper(resultset	=> sub { shift()->db->resultset(shift) });
 
 	$tws->helper(validate_api_key => sub {
+		print "validate_api_key(@_)$/";
 		my $self	= shift;
 		my $key		= shift;
 
@@ -15,6 +16,7 @@ sub create_helpers {
 	});
 
 	$tws->helper(validate_auth_key => sub {
+		print "validate_auth_key(@_)$/";
 		my $self	= shift;
 		my $key		= shift;
 
@@ -41,6 +43,50 @@ sub create_helpers {
 
 		my $movie	= $self->resultset("Movy");
 		$movie->update_or_create($data);
+	});
+
+	$tws->helper(subscribe_photolink => sub {
+		print "subscribe_photolink(@_)$/";
+		my $c	= shift;
+		my $msg	= shift;
+
+		my $device = $c->stash->{device};
+		$c->inactivity_timeout(36000);
+		my $event = "click " . $c->stash->{user}->id;
+		my $cb = $c->app->events->on($event => sub {
+			my $self	= shift;
+			my $trackmotion	= shift;
+
+			if($trackmotion) {
+				$device->update_or_create_related(device_photolinks => {photolink => $trackmotion->photolink->id});
+				$msg = $msg->reply({
+					photolink	=> $trackmotion->photolink->data,
+					thumb		=> $trackmotion->thumb,
+					movie_id	=> $trackmotion->movie->id
+				});
+			}
+		});
+		$c->on(finish => sub { shift->app->events->unsubscribe($event => $cb) });
+	});
+
+	$tws->helper(subscribe_trackmotion => sub {
+		my $c		= shift;
+		my $msg		= shift;
+
+		$c->inactivity_timeout(36000);
+		my $movie_id = $msg->data->{movie_id};
+		my $event = "new_point $movie_id";
+		my $cb = $c->app->events->on($event => sub {
+			my $self	= shift;
+			my $track_id	= shift;
+			my $trackmotion	= $c->resultset("Trackmotion")->find($track_id);
+
+			if($trackmotion) {
+				$msg = $msg->reply({trackmotion => $trackmotion->data});
+			}
+		});
+		$c->on(finish => sub { shift->app->events->unsubscribe($event => $cb) });
+		# Emit every existent track for that movie
 	});
 }
 

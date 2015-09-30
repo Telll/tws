@@ -2,7 +2,7 @@ package TWS::Routes;
 
 sub create_routes {
 	my $r = shift;
-	$r->websocket("/ws")->to("web_socket#ws");
+	#$r->websocket("/ws")->to("web_socket#ws");
 
 
 	my $api = $r->under("/")->to(
