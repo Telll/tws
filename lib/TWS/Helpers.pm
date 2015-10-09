@@ -53,11 +53,14 @@ sub create_helpers {
 		my $device = $c->stash->{device};
 		$c->inactivity_timeout(36000);
 		my $event = "click " . $c->stash->{user}->id;
-		my $cb = $c->app->events->on($event => sub {
+		my $cb = $c->app->mysql->pubsub->listen($event => sub {
+			$c->app->log->debug("received pl");
 			my $self	= shift;
-			my $trackmotion	= shift;
+			my $track_id	= shift;
+			my $trackmotion = $c->resultset("Trackmotion")->find($track_id);
 
 			if($trackmotion) {
+				$c->app->log->debug("sending tm");
 				$device->update_or_create_related(device_photolinks => {photolink => $trackmotion->photolink->id});
 				$msg = $msg->reply({
 					photolink	=> $trackmotion->photolink->data,
@@ -66,7 +69,7 @@ sub create_helpers {
 				});
 			}
 		});
-		$c->on(finish => sub { shift->app->events->unsubscribe($event => $cb) });
+		$c->on(finish => sub { shift->app->mysql->pubsub->unlisten($event => $cb) });
 	});
 
 	$tws->helper(subscribe_trackmotion => sub {
@@ -76,7 +79,7 @@ sub create_helpers {
 		$c->inactivity_timeout(36000);
 		my $movie_id = $msg->data->{movie_id};
 		my $event = "new_point $movie_id";
-		my $cb = $c->app->events->on($event => sub {
+		my $cb = $c->app->mysql->pubsub->listen($event => sub {
 			my $self	= shift;
 			my $track_id	= shift;
 			my $trackmotion	= $c->resultset("Trackmotion")->find($track_id);
@@ -85,7 +88,7 @@ sub create_helpers {
 				$msg = $msg->reply({trackmotion => $trackmotion->data});
 			}
 		});
-		$c->on(finish => sub { shift->app->events->unsubscribe($event => $cb) });
+		$c->on(finish => sub { shift->app->mysql->pubsub->unlisten($event => $cb) });
 		# Emit every existent track for that movie
 	});
 }

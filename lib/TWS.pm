@@ -6,11 +6,18 @@ use TWS::Helpers;
 use TWS::Minion::Email;
 use Mojo::EventEmitter;
 use Mojo::Util qw/dumper/;
+use Mojo::mysql;
 
 has schema => sub {
 	my $self = shift;
 	my $db = $self->config->{db};
-	TWS::Schema->connect($db->{connect_string}, $db->{user}, $db->{password});
+	TWS::Schema->connect("dbi:$db->{type}:database=$db->{database}", $db->{user}, $db->{password});
+};
+
+has mysql => sub {
+	my $self = shift;
+	my $db = $self->config->{db};
+	Mojo::mysql->new("mysql://$db->{user}:$db->{password}\@/$db->{database}")
 };
 
 has delimiter => sub {

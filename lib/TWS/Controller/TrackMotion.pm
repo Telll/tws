@@ -33,7 +33,7 @@ sub add_point {
 	my $point = $track->create_related(points => $data);
 	my $movie_id = $track->movie->id;
 
-	$self->app->events->emit("new_point $movie_id" => $track_id);
+	$self->app->mysql->pubsub->notify("new_point $movie_id" => $track_id);
 	$self->render(json => {created => \1, id => $point->id})
 }
 
@@ -42,7 +42,8 @@ sub click {
 	my $track_motion	= $self->stash->{got_track_motion};
 	my $json		= $self->req->json;
 
-	$self->app->events->emit("click " . $self->stash->{user}->id => $track_motion);
+	$self->app->log->debug("click");
+	$self->app->mysql->pubsub->notify("click " . $self->stash->{user}->id => $track_motion->id);
 	$self->render(json => {sent => \1})
 }
 

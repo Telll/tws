@@ -30,29 +30,29 @@ sub get {
 	undef
 }
 
-sub longpolling {
-	my $self	= shift;
-	
-	$self->write_chunk;
-
-	$self->inactivity_timeout(3600);
-	my $device	= $self->stash->{device};
-	my $c = $self;
-	my $event = "click " . $self->stash->{user}->id;
-	my $cb = $self->app->events->on($event => sub {
-		my $self	= shift;
-		my $trackmotion	= shift;
-
-		if($trackmotion) {
-			$device->update_or_create_related(device_photolinks => {photolink => $trackmotion->photolink->id});
-			$c->write_chunk(encode_json({
-				photolink	=> $trackmotion->photolink->data,
-				thumb		=> $trackmotion->thumb,
-				movie_id	=> $trackmotion->movie->id
-			}) . $delimiter);
-		}
-	});
-	$self->on(finish => sub { shift->app->events->unsubscribe($event => $cb) });
-}
+#sub longpolling {
+#	my $self	= shift;
+#	
+#	$self->write_chunk;
+#
+#	$self->inactivity_timeout(3600);
+#	my $device	= $self->stash->{device};
+#	my $c = $self;
+#	my $event = "click " . $self->stash->{user}->id;
+#	my $cb = $self->app->events->on($event => sub {
+#		my $self	= shift;
+#		my $trackmotion	= shift;
+#
+#		if($trackmotion) {
+#			$device->update_or_create_related(device_photolinks => {photolink => $trackmotion->photolink->id});
+#			$c->write_chunk(encode_json({
+#				photolink	=> $trackmotion->photolink->data,
+#				thumb		=> $trackmotion->thumb,
+#				movie_id	=> $trackmotion->movie->id
+#			}) . $delimiter);
+#		}
+#	});
+#	$self->on(finish => sub { shift->app->events->unsubscribe($event => $cb) });
+#}
 
 42
