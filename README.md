@@ -1,11 +1,7 @@
 # tws
 Telll web services.
 
-It responds to player, sender and receiver calls.
 
-## Features
--   Auth
--   
 # End Points
 
 # POST /app/track_motion/54/click
