@@ -1,10 +1,10 @@
-# tws
-Telll web services.
-
+Telll Web Services
+===================
 
 # End Points
 
-# POST /login
+# POST /login 
+Login with username and password
 
 + Request (application/json)
 
@@ -33,6 +33,37 @@ Telll web services.
     + Body
 
             {"auth_key":"ab151c3ed8135147509b32c0a9f3d6381ef0a8c2","device":"1461"}
+
+- - -
+# POST /login/461
+Login with device Id
+
++ Request (application/json)
+
+    + Headers
+
+            X-API-Key: 123
+
+    + Body
+
+            {
+                "user_name": "smokemachine",
+                "password": "12345"
+            }
+
++ Response 200 (application/json;charset=UTF-8)
+
+    + Headers
+
+            Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+            Vary: Origin
+            Access-Control-Max-Age: 3600
+            Access-Control-Allow-Origin: *
+            Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+
+    + Body
+
+            {"device":"1461","auth_key":"65b8e748b316f340cf87425426cc431d82960123"}
 
 
 # POST /app/track_motion/54/click
