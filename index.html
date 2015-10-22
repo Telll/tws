@@ -29,21 +29,18 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h1>
-<a id="tws" class="anchor" href="#tws" aria-hidden="true"><span class="octicon octicon-link"></span></a>tws</h1>
-
-<p>Telll web services.</p>
-
-<p>It responds to player, sender and receiver calls.</p>
-
-<h2>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
-
-<ul>
-<li>  Auth</li>
-</ul>
+<a id="telll-web-services" class="anchor" href="#telll-web-services" aria-hidden="true"><span class="octicon octicon-link"></span></a>Telll Web Services</h1>
 
 <h1>
-<a id="post-apptrack_motion54click" class="anchor" href="#post-apptrack_motion54click" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /app/track_motion/54/click</h1>
+<a id="end-points" class="anchor" href="#end-points" aria-hidden="true"><span class="octicon octicon-link"></span></a>End Points</h1>
+
+<h2>
+<a id="auth-operations" class="anchor" href="#auth-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Auth operations</h2>
+
+<h1>
+<a id="post-login" class="anchor" href="#post-login" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /login</h1>
+
+<p>Login with username and password</p>
 
 <ul>
 <li>
@@ -53,7 +50,635 @@
 <li>
 <p>Headers</p>
 
-<pre><code>X-Auth-Key: 24cba4ea481ffbd5ef11eb003e6c541f4c42f7a3
+<pre><code>X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "user_name": "smokemachine",
+    "password": "12345",
+    "model": "iPad"
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Vary: Origin
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"auth_key":"ab151c3ed8135147509b32c0a9f3d6381ef0a8c2","device":"1461"}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="post-login461" class="anchor" href="#post-login461" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /login/461</h1>
+
+<p>Login with device Id</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "user_name": "smokemachine",
+    "password": "12345"
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Vary: Origin
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"device":"1461","auth_key":"65b8e748b316f340cf87425426cc431d82960123"}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="delete-login" class="anchor" href="#delete-login" aria-hidden="true"><span class="octicon octicon-link"></span></a>DELETE /login</h1>
+
+<p>logout</p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: 026a26b104c736e18ba0bbaa2130259643e8d1cf
+X-API-Key: 123
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"logout":true}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<hr>
+
+<h2>
+<a id="movie-operations" class="anchor" href="#movie-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Movie operations</h2>
+
+<h1>
+<a id="post-appmovie" class="anchor" href="#post-appmovie" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /app/movie</h1>
+
+<p>movie create</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "title": "",
+    "description": ""
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 201 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Vary: Origin
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"id":"112","created":true}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="get-appmovie112" class="anchor" href="#get-appmovie112" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET /app/movie/112</h1>
+
+<p>get movie by id</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Vary: Origin, Origin
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"id":"112","category":"NYI","author":"NYI","cript":"NYI","player":{"_":"NYI"},"description":"","media":{"_":"NYI"},"title":""}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="get-appmovie0photolinks" class="anchor" href="#get-appmovie0photolinks" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET /app/movie/0/photolinks</h1>
+
+<p>get photolinks from movie with movieId</p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Vary: Origin, Origin
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Access-Control-Allow-Origin: *
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"photolinks":[{"thumb":"http:\/\/www.clker.com\/cliparts\/6\/f\/f\/3\/1197086068917675051egore_Thumb_Up_.svg","photolink":{"title":null,"description":null,"link":[],"sponsor":"NYI","id":"1","role":"NYI","category":"NYI"}},{"thumb":"http:\/\/www.clker.com\/cliparts\/6\/f\/f\/3\/1197086068917675051egore_Thumb_Up_.svg","photolink":{"title":null,"description":null,"sponsor":"NYI","link":[],"role":"NYI","id":"1","category":"NYI"}},{"photolink":{"category":"NYI","sponsor":"NYI","link":[],"id":"1010","role":"NYI","description":"jLSS682HmX4vYmV83dfhyKAgsntDyo0kKWnStGp2bkuo54lWrC2rtLrhwbuN3lHNAYRHY7w1fitCXPnd3G6ONkoGwpuYtwThxA6oReVbfK1JsvHFycPsqjrq77Qeh5OxWcVculjc5HwlIy1j8utcCrbgqxO0rGmDSwelwp7tpQLSka8yjK0eBT6bGsipobQOJTvNwsqvDQfTio33DgqgDjhqTkuB8XyTKt6ybicuHMMGhqAn5MFgWipyi1","title":"cvIFieeHRVktF8H6rwmlr0hibxwqG1Am"},"thumb":"http:\/\/www.clker.com\/cliparts\/6\/f\/f\/3\/1197086068917675051egore_Thumb_Up_.svg"},{"thumb":"http:\/\/www.clker.com\/cliparts\/6\/f\/f\/3\/1197086068917675051egore_Thumb_Up_.svg","photolink":{"title":"QvoIi5Jl6l6wSm3S6uLXxRKyOy1l4Su5","description":"LuSsr3PLOVX8v1bhI4lBHu7gb7v6e26jJ77dtcsfUEuQVxkCEDXnFoD04FKmHappnOFtYAkoaN0YRXwrVbwFEN43pS3q3hcwfgSLPyHG68lH0jP0b5W6iU0BVrkvYTE56uCN13r35YFyQtUDy10DTiBWoaVDPXeXuPEhH2e0dj2fDDNrYXljaMOIdg0Xy3AnY7TcFQXVSjlys31QOwgWSf4niurNjiC3DoQYR8gxR75dn3XVJNpRb8ILJs","link":[],"role":"NYI","sponsor":"NYI","id":"1016","category":"NYI"}},{"thumb":"http:\/\/www.clker.com\/cliparts\/6\/f\/f\/3\/1197086068917675051egore_Thumb_Up_.svg","photolink":{"category":"NYI","role":"NYI","link":[],"sponsor":"NYI","id":"1017","description":"g47pSO1IbRgJS7s30RGBMuLuCn7vE2dcGNlBRiaYBSKEkKkoS5bkAtyQxWec1TasC1RfGD3mdPjuHVqiseKtGpHqRGmXcIyPnbeIYIfuCArSx2wNpX23b6frvLofMr4onXPf1pbH1W0TO3KLQKNoAGFR5RuTmfl58JMVGo7Nbfss5Co1PYpoOjDe4w4YyF2B6krpTULkToc7Pf5K1xbDuAwaQLBATR5SJIOd6gyeywl7ciHPWBJe2vyOdi","title":"sF6gntHK1kDa6PaysKPUVAiC2sNxm2p6"}},{"thumb":"http:\/\/www.clker.com\/cliparts\/6\/f\/f 
+</code></pre>
+
+<p>......</p>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="delete-appmovie112" class="anchor" href="#delete-appmovie112" aria-hidden="true"><span class="octicon octicon-link"></span></a>DELETE /app/movie/112</h1>
+
+<p>delete movie by movie id</p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin, Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"deleted":true}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h2>
+<a id="device-operations" class="anchor" href="#device-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Device operations</h2>
+
+<h1>
+<a id="get-appdevice13" class="anchor" href="#get-appdevice13" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET /app/device/13</h1>
+
+<p>get device by id</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin, Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"name":"iPad"}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="get-appdevice13photolinks" class="anchor" href="#get-appdevice13photolinks" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET /app/device/13/photolinks</h1>
+
+<p>get photolinks for device by device id</p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin, Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"photolinks":[{"category":"NYI","link":[],"sponsor":"NYI","id":"0","role":"NYI","description":null,"title":null},{"sponsor":"NYI","link":[],"role":"NYI","id":"1","category":"NYI","title":null,"description":null},{"category":"NYI","role":"NYI","link":[],"sponsor":"NYI","id":"1017","description":"g47pSO1IbRgJS7s30RGBMuLuCn7vE2dcGNlBRiaYBSKEkKkoS5bkAtyQxWec1TasC1RfGD3mdPjuHVqiseKtGpHqRGmXcIyPnbeIYIfuCArSx2wNpX23b6frvLofMr4onXPf1pbH1W0TO3KLQKNoAGFR5RuTmfl58JMVGo7Nbfss5Co1PYpoOjDe4w4YyF2B6krpTULkToc7Pf5K1xbDuAwaQLBATR5SJIOd6gyeywl7ciHPWBJe2vyOdi","title":"sF6gntHK1kDa6PaysKPUVAiC2sNxm2p6"},{"description":"Se powgiz akarikbu kulered upuego fubowa mup absog me taziv uszowe leko.","title":"Nu jacin mi bumku.","category":"NYI","link":[],"role":"NYI","sponsor":"NYI","id":"1099"},{"link":[],"id":"1105","sponsor":"NYI","role":"NYI","category":"NYI","title":"Ta ogazoga hulefaroj ja.","description":"Kudisoiz ofje vukcogna esebo egoreizu mefitop girketden zoheep mudolti veceghib cezbopoj zunki pakturah azoses kazufi pujlaj."}]}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<hr>
+
+<h2>
+<a id="photolink-operations" class="anchor" href="#photolink-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Photolink operations</h2>
+
+<h1>
+<a id="post-appphotolink" class="anchor" href="#post-appphotolink" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /app/photolink</h1>
+
+<p>create photolink</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "title": "",
+    "description": "",
+    "mediatype": "xRGnWoMOf1TkGCn0CvRnEblN5IvOCdyV"
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"created":true,"id":"1109"}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="get-appphotolink1109" class="anchor" href="#get-appphotolink1109" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET /app/photolink/1109</h1>
+
+<p>get Photolink by id</p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Vary: Origin, Origin
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"id":"1109","link":[],"sponsor":"NYI","role":"NYI","category":"NYI","title":"","description":""}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<hr>
+
+<h2>
+<a id="track-motion-operations" class="anchor" href="#track-motion-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Track Motion operations</h2>
+
+<h1>
+<a id="post-appphotolink1109track_motion" class="anchor" href="#post-appphotolink1109track_motion" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /app/photolink/1109/track_motion</h1>
+
+<p>create track motion for photolink by photolink id</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "movie": 0,
+    "points": [
+        {
+            "t": 1,
+            "x": 0,
+            "y": 2
+        },
+        {
+            "t": 1.1,
+            "x": 2,
+            "y": 3
+        }
+    ]
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin, Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"created":true,"id":"56"}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="post-apptrack_motion56point" class="anchor" href="#post-apptrack_motion56point" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /app/track_motion/56/point</h1>
+
+<p>create point in track motion by track motion id</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
 X-API-Key: 123
 </code></pre>
 </li>
@@ -76,9 +701,109 @@ X-API-Key: 123
 <li>
 <p>Headers</p>
 
-<pre><code>Access-Control-Allow-Origin: *
+<pre><code>Vary: Origin, Origin
 Access-Control-Max-Age: 3600
 Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"id":"127","created":true}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="get-apptrack_motion56" class="anchor" href="#get-apptrack_motion56" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET /app/track_motion/56</h1>
+
+<p>get track motion by track motion id </p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin, Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"photolink":{"category":"NYI","link":[],"role":"NYI","sponsor":"NYI","id":"1109","description":"","title":""},"points":[{"y":"2","x":"0","t":"1"},{"t":"1.1","x":"2","y":"3"},{"y":"0","x":"0","t":"0"}]}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="post-apptrack_motion56click" class="anchor" href="#post-apptrack_motion56click" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /app/track_motion/56/click</h1>
+
+<p>register a click in track motion id, sending a photolink to user</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "x": 0,
+    "y": 0,
+    "t": 0
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Origin: *
 Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
 Vary: Origin, Origin
 </code></pre>
@@ -92,6 +817,113 @@ Vary: Origin, Origin
 </ul>
 </li>
 </ul>
+
+<hr>
+
+<hr>
+
+<h2>
+<a id="user-operations" class="anchor" href="#user-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>User operations</h2>
+
+<h1>
+<a id="post-appuser" class="anchor" href="#post-appuser" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST /app/user</h1>
+
+<p>create user</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: ab151c3ed8135147509b32c0a9f3d6381ef0a8c2
+X-API-Key: 123
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "password": "",
+    "username": "",
+    "email": ""
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 400 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+Vary: Origin
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"errors":[{"path":"\/password","message":"String is too short: 0\/5."},{"path":"\/username","message":"String is too short: 0\/3."},{"path":"\/email","message":"Does not match email format."}]}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="get-appuser27photolinks" class="anchor" href="#get-appuser27photolinks" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET /app/user/27/photolinks</h1>
+
+<p>get photolinks for user by user id</p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>X-Auth-Key: 026a26b104c736e18ba0bbaa2130259643e8d1cf
+X-API-Key: 123
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200 (application/json;charset=UTF-8)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Vary: Origin, Origin
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key, X-Auth-Key
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{"photolinks":[{"category":"NYI","role":"NYI","link":[],"sponsor":"NYI","id":"5","description":null,"title":null},{"category":"NYI","link":[],"id":"5","sponsor":"NYI","role":"NYI","description":null,"title":null},{"title":null,"description":null,"id":"5","link":[],"sponsor":"NYI","role":"NYI","category":"NYI"},{"description":null,"title":null,"category":"NYI","link":[],"id":"3","sponsor":"NYI","role":"NYI"},  .....
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<hr>
         </section>
 
         <aside id="sidebar">
