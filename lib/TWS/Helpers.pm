@@ -1,4 +1,6 @@
 package TWS::Helpers;
+use Mojo::Util qw/dumper/;
+use Mojo::JSON qw/decode_json/;
 
 sub create_helpers {
 	my $tws = shift;
@@ -47,22 +49,25 @@ sub create_helpers {
 
 	$tws->helper(subscribe_photolink => sub {
 		print "subscribe_photolink(@_)$/";
-		my $c	= shift;
-		my $msg	= shift;
+		my $c		= shift;
+		my $msg		= shift;
 
 		my $device = $c->stash->{device};
 		$c->inactivity_timeout(36000);
 		my $event = "click " . $c->stash->{user}->id;
 		my $cb = $c->app->mysql->pubsub->listen($event => sub {
-			$c->app->log->debug("received pl");
 			my $self	= shift;
-			my $track_id	= shift;
+			my $data	= decode_json shift;
+			$c->app->log->debug("received pl: ", dumper $data);
+			my $track_id	= $data->{trackmotion};
+			my $extra_data	= $data->{extra_data};
 			my $trackmotion = $c->resultset("Trackmotion")->find($track_id);
 
 			if($trackmotion) {
 				$c->app->log->debug("sending tm");
 				$device->update_or_create_related(device_photolinks => {photolink => $trackmotion->photolink->id});
 				$msg = $msg->reply({
+					extra_data	=> $extra_data,
 					photolink	=> $trackmotion->photolink->data,
 					thumb		=> $trackmotion->thumb,
 					movie_id	=> $trackmotion->movie->id
