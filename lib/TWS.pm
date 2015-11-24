@@ -136,6 +136,14 @@ sub startup {
 			});
 		})
 	;
+	$authenticated
+		->type("REQUEST")
+		->command(movies => sub{
+			my $self	= shift;
+			my $cmd		= shift;
+			$cmd->reply({movies => [map {$_->data} $self->resultset("Movy")->all]});
+		})
+	;
 
 	$self->plugin(SecureCORS => {
 		"cors.origin"		=> "*",

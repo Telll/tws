@@ -37,6 +37,12 @@ sub create_routes {
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
+	$get_user->post("/")->to("user#create");
+	$get_user->cors("/")->to(
+		"cors.methods"	=> "post",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
 	$get_user->delete("/")->to("user#del");
 	$get_user->cors("/")->to(
 		"cors.methods"	=> "delete",
@@ -74,9 +80,11 @@ sub create_routes {
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
-	$app->post("/movie")->to("movie#create", "json.validator.schema" => "data://TWS::Schema::Result::Movy/movie.schema.json");
+	my $movies = $app->any("/movie");
+	$movies->get->to("movie#list");
+	$movies->post->to("movie#create", "json.validator.schema" => "data://TWS::Schema::Result::Movy/movie.schema.json");
 	$appcors->cors("/movie")->to(
-		"cors.methods"	=> "POST",
+		"cors.methods"	=> "POST, GET",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 

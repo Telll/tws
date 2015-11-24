@@ -144,6 +144,7 @@ sub data {
 		category	=> "NYI",
 		title		=> $self->title,
 		description	=> $self->description,
+		url		=> $self->url,
 		cript		=> "NYI",
 		author		=> "NYI",
 		media		=> {_ => "NYI"},

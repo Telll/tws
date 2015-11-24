@@ -28,6 +28,12 @@ sub del {
 	}
 }
 
+sub list {
+	my $self	= shift;
+
+	return $self->render(json => {movies => [map {$_->data} $self->resultset("Movy")->all]});
+}
+
 sub get {
 	my $self	= shift;
 

@@ -5,6 +5,10 @@ sub create {
 	my $self	= shift;
 	my $data	= $self->req->json;
 
+	if(exists $self->stash->{user_id}) {
+		$data->{id} = $self->stash->{user_id};
+	}
+
 	my $userrs	= $self->resultset("User");
 	if(exists $data->{password}) {
 		$data->{salt}		= $userrs->generate_salt;
@@ -27,7 +31,12 @@ sub del {
 sub get {
 	my $self	= shift;
 
-	$self->stash->{got_user} = $self->resultset("User")->find($self->stash->{user_id});
+	if($self->stash->{user_id} eq "self") {
+		$self->stash->{got_user} = $self->stash->{user};
+		$self->stash->{user_id} = $self->stash->{user}->id;
+	} else {
+		$self->stash->{got_user} = $self->resultset("User")->find($self->stash->{user_id});
+	}
 	if($self->stash->{got_user}) {
 		$self->render(json => $self->stash->{got_user}->data);
 		return 1
