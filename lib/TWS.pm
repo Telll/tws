@@ -138,10 +138,24 @@ sub startup {
 	;
 	$authenticated
 		->type("REQUEST")
+		->schema({
+			type		=> "object",
+			properties	=> {
+				page	=> {type => "integer"},
+				rows	=> {type => "integer"}
+			}
+		})
 		->command(movies => sub{
 			my $self	= shift;
 			my $cmd		= shift;
-			$cmd->reply({movies => [map {$_->data} $self->resultset("Movy")->all]});
+			my $movies = $self->resultset("Movy");
+			$cmd->reply({
+				total	=> $movies->count,
+				page	=> $cmd->data->{page},
+				movies	=> [
+					map {$_->data} $movies->search({}, {rows => $cmd->data->{rows} // 10})->page($cmd->data->{page} // 1)->all
+				]
+			});
 		})
 	;
 

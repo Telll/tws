@@ -14,6 +14,7 @@ sub create {
 		$data->{salt}		= $userrs->generate_salt;
 		$data->{counter}	= 1024;
 		$data->{password}	= $userrs->hashfy_password($data->{password}, $data->{counter}, $data->{salt});
+		$data->{active}		= 1
 	}
 	my $user = $userrs->update_or_create($data);
 	$self->render(json => {created => $user->id ? \1 : \0, id => $user->id}, status => 201)
@@ -23,7 +24,7 @@ sub del {
 	my $self	= shift;
 
 	if($self->stash->{got_user}) {
-		my $deleted = (delete $self->stash->{got_user})->delete;
+		my $deleted = (delete $self->stash->{got_user})->update({active => 0});
 		$self->render(json => {deleted => $deleted ? \1 : \0})
 	}
 }
@@ -35,7 +36,7 @@ sub get {
 		$self->stash->{got_user} = $self->stash->{user};
 		$self->stash->{user_id} = $self->stash->{user}->id;
 	} else {
-		$self->stash->{got_user} = $self->resultset("User")->find($self->stash->{user_id});
+		$self->stash->{got_user} = $self->resultset("User")->find({id => $self->stash->{user_id}, active => 1});
 	}
 	if($self->stash->{got_user}) {
 		$self->render(json => $self->stash->{got_user}->data);

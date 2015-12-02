@@ -79,6 +79,12 @@ __PACKAGE__->table("users");
   default_value: 1024
   is_nullable: 1
 
+=head2 active
+
+  data_type: 'tinyint'
+  default_value: 1
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -106,6 +112,8 @@ __PACKAGE__->add_columns(
   { data_type => "char", is_nullable => 0, size => 15 },
   "counter",
   { data_type => "integer", default_value => 1024, is_nullable => 1 },
+  "active",
+  { data_type => "tinyint", default_value => 1, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -167,8 +175,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-08-30 02:39:46
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cmkutPTlcUYp2mBBR0uFng
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-02 03:01:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9wTv/qM0ICA0k1b/61jKdg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

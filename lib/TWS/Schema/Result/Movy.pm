@@ -56,15 +56,19 @@ __PACKAGE__->table("movies");
 
 =head2 url
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 45
 
 =head2 player
 
   data_type: 'varchar'
   is_nullable: 1
   size: 45
+
+=head2 image
+
+  data_type: 'text'
+  is_nullable: 1
 
 =cut
 
@@ -81,9 +85,11 @@ __PACKAGE__->add_columns(
   "description",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "url",
-  { data_type => "varchar", is_nullable => 1, size => 45 },
+  { data_type => "text", is_nullable => 1 },
   "player",
   { data_type => "varchar", is_nullable => 1, size => 45 },
+  "image",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -130,8 +136,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-23 02:12:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:SXyiPXPsQb/F6FDpcD3lmQ
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-11-30 00:57:02
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:P3CXBTysz/o6AAYZcW8+5Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -145,6 +151,7 @@ sub data {
 		title		=> $self->title,
 		description	=> $self->description,
 		url		=> $self->url,
+		image		=> $self->image,
 		cript		=> "NYI",
 		author		=> "NYI",
 		media		=> {_ => "NYI"},

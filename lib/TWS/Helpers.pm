@@ -26,7 +26,7 @@ sub create_helpers {
 		if($auth) {
 			$self->stash->{device}	= $auth->device;
 			$self->stash->{user}	= $self->stash->{device}->user;
-			return $auth;
+			return $auth if $self->stash->{user}->active;
 		}
 	});
 
