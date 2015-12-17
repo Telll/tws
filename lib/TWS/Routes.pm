@@ -37,7 +37,7 @@ sub create_routes {
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
-	$get_user->post("/")->to("user#create");
+	$get_user->post("/")->to("user#create", "json.validator.schema" => "data://TWS::Schema::Result::User/user_edit.schema.json");
 	$get_user->cors("/")->to(
 		"cors.methods"	=> "post",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
@@ -99,6 +99,7 @@ sub create_routes {
 	$app->post("/photolink/")->to("photolink#create", "json.validator.schema" => "data://TWS::Schema::Result::Photolink/photolink.schema.json");
 	my $get_pl = $app->under("/photolink/:photolink_id")->to("photolink#get");
 	$get_pl->get("/");
+	$get_pl->get("/follow")->to("photolink#follow");
 
 	$get_pl->post("/track_motion")->to("track_motion#create", "json.validator.schema" => "data://TWS::Schema::Result::Trackmotion/trackmotion.schema.json");
 	my $get_track_motion = $app->under("/track_motion/:track_motion_id")->to("track_motion#get");

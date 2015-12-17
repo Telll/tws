@@ -87,7 +87,8 @@ sub startup {
 		->conditional(sub {
 			my $self	= shift;
 			my $cmd		= shift;
-			$cmd->{stash}{auth} = $self->validate_auth_key($cmd->data->{auth_key})})
+			$self->{stash}{auth} = $self->validate_auth_key($cmd->data->{auth_key})
+		})
 	;
 	$authenticated
 		->type("SUBSCRIBE")
@@ -113,7 +114,7 @@ sub startup {
 		->command(logout => sub{
 			my $self	= shift;
 			my $cmd		= shift;
-			$cmd->{stash}{auth}->update({logout => \"now()"});
+			$self->{stash}{auth}->update({logout => \"now()"});
 			$cmd->reply(\1);
 		})
 	;
@@ -134,6 +135,34 @@ sub startup {
 				trackmotion	=> $cmd->data->{trackmotion},
 				extra_data	=> $cmd->data->{extra_data}
 			});
+			$cmd->reply("OK")
+		})
+	;
+	$authenticated
+		->type("REQUEST")
+		->schema({
+			type		=> "object",
+			required	=> [qw/photolink/],
+			properties	=> {
+				photolink	=> {type => "integer"},
+				extra_data	=> {}
+			}
+		})
+		->conditional(sub {
+			my $self	= shift;
+			my $cmd		= shift;
+			$self->stash->{photolink_id}	= $cmd->data->{photolink};
+
+			$self->app->log->debug("CONDITIONAL");
+			$self->stash->{got_photolink} = $self->resultset("Photolink")->find($self->stash->{photolink_id});
+
+		})
+		->command(follow_photolink => sub{
+			my $self	= shift;
+			$self->app->log->debug("PASSOU CONDITIONAL");
+			my $cmd		= shift;
+			my $link	= $self->stash->{got_photolink}->{link};
+			$cmd->reply({redirect => $link});
 		})
 	;
 	$authenticated

@@ -30,6 +30,13 @@ sub get {
 	undef
 }
 
+sub follow {
+	my $self = shift;
+
+	my $link = $self->stash->{got_photolink}->{link};
+	$self->render(json => {redirect => $link})
+}
+
 #sub longpolling {
 #	my $self	= shift;
 #	

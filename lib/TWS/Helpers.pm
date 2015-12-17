@@ -70,7 +70,8 @@ sub create_helpers {
 					extra_data	=> $extra_data,
 					photolink	=> $trackmotion->photolink->data,
 					thumb		=> $trackmotion->thumb,
-					movie_id	=> $trackmotion->movie->id
+					movie_id	=> $trackmotion->movie->id,
+					track_id	=> $track_id,
 				});
 			}
 		});

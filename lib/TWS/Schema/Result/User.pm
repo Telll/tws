@@ -227,3 +227,24 @@ __DATA__
         },
         "required": ["username", "email", "password"]
 }
+
+@@ user_edit.schema.json
+{
+        "title": "User",
+        "type": "object",
+        "properties": {
+                "username": {
+                        "type":		"string",
+			"minLength":	3,
+			"maxLength":	255
+                },
+                "email": {
+                        "type":		"string",
+			"format":	"email"
+                },
+                "password": {
+                        "type":		"string",
+			"minLength":	5
+                }
+        }
+}

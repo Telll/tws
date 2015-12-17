@@ -5,9 +5,12 @@ sub create {
 	my $self	= shift;
 	my $data	= $self->req->json;
 
-	if(exists $self->stash->{user_id}) {
+	if(exists $self->stash->{user_id} and $self->stash->{user_id} ne "self") {
 		$data->{id} = $self->stash->{user_id};
+	} elsif(exists $self->stash->{user_id} and $self->stash->{user_id} eq "self") {
+		$data->{id} = $self->stash->{user}->id
 	}
+
 
 	my $userrs	= $self->resultset("User");
 	if(exists $data->{password}) {
