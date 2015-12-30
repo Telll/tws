@@ -131,7 +131,7 @@ sub startup {
 		->command(click_trackmotion => sub{
 			my $self	= shift;
 			my $cmd		= shift;
-			$self->app->mysql->pubsub->notify("click " . $cmd->{stash}{auth}->device->user->id => encode_json {
+			$self->app->mysql->pubsub->notify("click " . $self->{stash}{auth}->device->user->id => encode_json {
 				trackmotion	=> $cmd->data->{trackmotion},
 				extra_data	=> $cmd->data->{extra_data}
 			});
@@ -149,20 +149,67 @@ sub startup {
 			}
 		})
 		->conditional(sub {
-			my $self	= shift;
-			my $cmd		= shift;
-			$self->stash->{photolink_id}	= $cmd->data->{photolink};
+			my $self		= shift;
+			my $cmd			= shift;
+			my $photolink_id	= $cmd->data->{photolink};
 
-			$self->app->log->debug("CONDITIONAL");
-			$self->stash->{got_photolink} = $self->resultset("Photolink")->find($self->stash->{photolink_id});
+			$self->stash->{got_photolink} = $self->resultset("Photolink")->find($photolink_id);
 
 		})
 		->command(follow_photolink => sub{
 			my $self	= shift;
-			$self->app->log->debug("PASSOU CONDITIONAL");
 			my $cmd		= shift;
-			my $link	= $self->stash->{got_photolink}->{link};
+			my $link	= $self->stash->{got_photolink}->href;
 			$cmd->reply({redirect => $link});
+		})
+	;
+	$authenticated
+		->type("REQUEST")
+		->schema({
+			type		=> "object",
+			required	=> [qw/trackmotion/],
+			properties	=> {
+				trackmotion	=> {type => "integer"},
+				extra_data	=> {}
+			}
+		})
+		->conditional(sub {
+			my $self		= shift;
+			my $cmd			= shift;
+			my $trackmotion_id	= $cmd->data->{trackmotion};
+
+			$self->stash->{got_track_motion} = $self->resultset("Trackmotion")->find($trackmotion_id);
+
+		})
+		->command(follow_trackmotion => sub{
+			my $self	= shift;
+			my $cmd		= shift;
+
+			my $redirect = $self->stash->{got_track_motion}->redirect($self->stash->{user});
+
+			$cmd->reply({redirect => $redirect->redirect_to});
+		})
+	;
+	$authenticated
+		->type("REQUEST")
+		->schema({
+			type		=> "object",
+			required	=> [qw/movie/],
+			properties	=> {
+				movie		=> {type => "integer"},
+			}
+		})
+		->conditional(sub {
+			my $self	= shift;
+			my $cmd		= shift;
+		
+			$self->stash->{got_movie} = $self->resultset("Movy")->find($cmd->data->{movie});
+		})
+		->command(trackmotions_from_movie => sub{
+			my $self	= shift;
+			my $cmd		= shift;
+			my $movie	= $self->stash->{got_movie};
+			$cmd->reply({trackmotions => [map {$_->data} $movie ? $movie->trackmotions->all : ()]})
 		})
 	;
 	$authenticated

@@ -43,6 +43,12 @@ sub get {
 	undef
 }
 
+sub trackmotions {
+	my $self	= shift;
+	my $movie	= $self->stash->{got_movie};
+	$self->render(json => {trackmotions => [map {$_->data} $movie ? $movie->trackmotions->all : ()]})
+}
+
 sub photolinks {
 	my $self	= shift;
 	my $movie	= $self->stash->{got_movie};

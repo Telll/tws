@@ -122,6 +122,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 redirects
+
+Type: has_many
+
+Related object: L<TWS::Schema::Result::Redirect>
+
+=cut
+
+__PACKAGE__->has_many(
+  "redirects",
+  "TWS::Schema::Result::Redirect",
+  { "foreign.photolink" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 trackmotions
 
 Type: has_many
@@ -153,13 +168,15 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-09-23 02:12:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KaPQ4n0k2eT98Gb1Gm6oSA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-30 03:38:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bwvds4c7l+2CYx874IqrjQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-sub links { shift()->urls }
+sub links	{ shift()->urls }
+sub link	{ (shift()->links)[0] }
+sub href	{ shift()->link->href }
 
 sub click {
 	my $self	= shift;

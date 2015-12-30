@@ -174,9 +174,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 redirects
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-02 03:01:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9wTv/qM0ICA0k1b/61jKdg
+Type: has_many
+
+Related object: L<TWS::Schema::Result::Redirect>
+
+=cut
+
+__PACKAGE__->has_many(
+  "redirects",
+  "TWS::Schema::Result::Redirect",
+  { "foreign.user" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-30 03:38:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1Gp4pFSm0VRAcW7c1i7mLg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

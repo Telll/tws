@@ -120,6 +120,21 @@ __PACKAGE__->add_unique_constraint("title", ["title"]);
 
 =head1 RELATIONS
 
+=head2 redirects
+
+Type: has_many
+
+Related object: L<TWS::Schema::Result::Redirect>
+
+=cut
+
+__PACKAGE__->has_many(
+  "redirects",
+  "TWS::Schema::Result::Redirect",
+  { "foreign.movie" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 trackmotions
 
 Type: has_many
@@ -136,8 +151,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-11-30 00:57:02
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:P3CXBTysz/o6AAYZcW8+5Q
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-30 03:38:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:h+oZXaYpbY6tYV9tRiN5qA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

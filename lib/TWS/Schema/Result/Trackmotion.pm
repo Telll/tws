@@ -156,6 +156,13 @@ __PACKAGE__->has_many(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
+sub redirect {
+	my $self	= shift;
+	my $user	= shift;
+
+	$self->photolink->create_related(redirects => {user => $user->id, movie => $self->movie->id, redirect_to => $self->photolink->href})
+}
+
 sub data {
 	my $self	= shift;
 	my @include	= @_;
