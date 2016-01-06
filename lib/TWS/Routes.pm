@@ -84,16 +84,16 @@ sub create_routes {
 	$movies->get->to("movie#list");
 	$movies->post->to("movie#create", "json.validator.schema" => "data://TWS::Schema::Result::Movy/movie.schema.json");
 	$appcors->cors("/movie")->to(
-		"cors.methods"	=> "POST, GET",
+		"cors.methods"	=> "post, get",
 		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
 	my $get_movies = $app->under("/movie/:movie_id")->to("movie#get");
 	$get_movies->delete("/")->to("movie#del");
 	$get_movies->get("/");
-	my $cors_movies = $get_movies->cors("/")->to(
-		"cors.methods"	=> "GET, DELETE",
-		"cors.headers"	=> "X-API-Key, X-Auth-Key",
+	my $cors_movies = $appcors->cors("/movie/:movie_id")->to(
+		"cors.methods"	=> "get, delete",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
 	);
 
 	$app->post("/photolink/")->to("photolink#create", "json.validator.schema" => "data://TWS::Schema::Result::Photolink/photolink.schema.json");

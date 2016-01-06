@@ -75,6 +75,18 @@ __PACKAGE__->table("redirects");
   data_type: 'text'
   is_nullable: 0
 
+=head2 price
+
+  data_type: 'integer'
+  default_value: 0
+  is_nullable: 0
+
+=head2 divisor_for_cents
+
+  data_type: 'integer'
+  default_value: 100
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -115,6 +127,10 @@ __PACKAGE__->add_columns(
   },
   "redirect_to",
   { data_type => "text", is_nullable => 0 },
+  "price",
+  { data_type => "integer", default_value => 0, is_nullable => 0 },
+  "divisor_for_cents",
+  { data_type => "integer", default_value => 100, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -177,8 +193,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-30 03:38:15
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:UIbD5Wf1B9Oy3PYi/FIOPw
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-31 01:51:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pWxkU990ggDKzyG1s+4g3g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -160,7 +160,7 @@ sub redirect {
 	my $self	= shift;
 	my $user	= shift;
 
-	$self->photolink->create_related(redirects => {user => $user->id, movie => $self->movie->id, redirect_to => $self->photolink->href})
+	$self->photolink->create_related(redirects => {user => $user->id, movie => $self->movie->id, redirect_to => $self->photolink->href, price => 100})
 }
 
 sub data {
