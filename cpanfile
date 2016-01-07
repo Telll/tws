@@ -1,4 +1,14 @@
 requires 'Mojolicious';
+requires 'List::MoreUtils';
+requires 'DBI';
+requires 'DBD::mysql';
+requires 'DBIx::Class';
+requires 'Sub::Name';
+requires 'Digest::SHA1';
+requires 'Mojo::mysql';
+requires 'Minion';
+requires 'DBD::SQLite';
+requires 'Minion::Backend::SQLite';
 requires 'Mojolicious::Plugin::CORS';
 requires 'Mojolicious::Plugin::SecureCORS';
 requires 'Mojolicious::Plugin::JSON::Validator', '>= 0', git => 'git://github.com/FCO/Mojolicious-Plugin-JSON-Validator.git';

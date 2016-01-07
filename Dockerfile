@@ -2,10 +2,17 @@
 FROM        perl:latest
 MAINTAINER  Fernando Correa de Oliveira
 
+ADD . tws
+
+RUN apt-get update
+RUN apt-get install -y mysql-client libmysqlclient-dev
+
 RUN curl -L http://cpanmin.us | perl - App::cpanminus
-RUN cpanm Carton Mojolicious
+RUN cpanm Carton
+WORKDIR tws
+RUN ls -la
+RUN carton install --deployment
 
 EXPOSE 3000
 
-WORKDIR tws
-CMD carton exec scripts/tws daemon
+CMD carton exec script/tws daemon

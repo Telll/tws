@@ -254,7 +254,7 @@ sub startup {
 	$self->plugin(JSONConfig => {
 		file	=> $self->home->rel_dir("tws.json"),
 		default => {
-			minion_backend	=> {File => "/tmp/bla.db"},
+			minion_backend	=> {SQLite => "/tmp/bla.db"},
 			email		=> {
 				template	=> "email.mt",
 				from		=> 'test@telll.com',
