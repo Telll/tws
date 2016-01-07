@@ -3,6 +3,7 @@ requires 'List::MoreUtils';
 requires 'DBI';
 requires 'DBD::mysql';
 requires 'DBIx::Class';
+requires 'DBIx::Class::Migration';
 requires 'Sub::Name';
 requires 'Digest::SHA1';
 requires 'Mojo::mysql';
