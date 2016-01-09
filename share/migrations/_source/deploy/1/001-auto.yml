@@ -1,0 +1,1816 @@
+---
+schema:
+  procedures: {}
+  tables:
+    auth:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+            - auth_key
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - device
+          match_type: ''
+          name: auth_fk_device
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: devices
+          type: FOREIGN KEY
+      fields:
+        auth_key:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: auth_key
+          order: 2
+          size:
+            - 255
+        device:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: device
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 1
+          name: id
+          order: 1
+          size:
+            - 0
+        login:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: login
+          order: 3
+          size:
+            - 0
+        logout:
+          data_type: datetime
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: logout
+          order: 5
+          size:
+            - 0
+      indices:
+        - fields:
+            - device
+          name: auth_idx_device
+          options: []
+          type: NORMAL
+      name: auth
+      options: []
+      order: 1
+    clicks:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - device
+          match_type: ''
+          name: clicks_fk_device
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: devices
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - photolink
+          match_type: ''
+          name: clicks_fk_photolink
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: photolinks
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - user
+          match_type: ''
+          name: clicks_fk_user
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: users
+          type: FOREIGN KEY
+      fields:
+        device:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: device
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        photolink:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: photolink
+          order: 3
+          size:
+            - 0
+        time:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: time
+          order: 5
+          size:
+            - 0
+        user:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: user
+          order: 6
+          size:
+            - 0
+        value:
+          data_type: decimal
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: value
+          order: 2
+          size:
+            - 2
+            - 0
+      indices:
+        - fields:
+            - device
+          name: clicks_idx_device
+          options: []
+          type: NORMAL
+        - fields:
+            - photolink
+          name: clicks_idx_photolink
+          options: []
+          type: NORMAL
+        - fields:
+            - user
+          name: clicks_idx_user
+          options: []
+          type: NORMAL
+      name: clicks
+      options: []
+      order: 2
+    code_data:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - idcode_data
+            - components_idcomponents
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - components_idcomponents
+          match_type: ''
+          name: code_data_fk_components_idcomponents
+          on_delete: NO ACTION
+          on_update: NO ACTION
+          options: []
+          reference_fields:
+            - idcomponents
+          reference_table: components
+          type: FOREIGN KEY
+      fields:
+        components_idcomponents:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: components_idcomponents
+          order: 4
+          size:
+            - 0
+        dataid:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: dataid
+          order: 3
+          size:
+            - 0
+        datatype:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: datatype
+          order: 2
+          size:
+            - 45
+        idcode_data:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: idcode_data
+          order: 1
+          size:
+            - 0
+      indices:
+        - fields:
+            - components_idcomponents
+          name: code_data_idx_components_idcomponents
+          options: []
+          type: NORMAL
+      name: code_data
+      options: []
+      order: 3
+    components:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - idcomponents
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        doc:
+          data_type: longtext
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: doc
+          order: 4
+          size:
+            - 0
+        href:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: href
+          order: 3
+          size:
+            - 255
+        idcomponents:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: idcomponents
+          order: 1
+          size:
+            - 0
+        name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: name
+          order: 2
+          size:
+            - 45
+      indices: []
+      name: components
+      options: []
+      order: 4
+    device_models:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - name
+          match_type: ''
+          name: name
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: name
+          order: 2
+          size:
+            - 50
+      indices: []
+      name: device_models
+      options: []
+      order: 5
+    device_photolinks:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - photolink
+            - device
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - device
+          match_type: ''
+          name: device_photolinks_fk_device
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: devices
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - photolink
+          match_type: ''
+          name: device_photolinks_fk_photolink
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: photolinks
+          type: FOREIGN KEY
+      fields:
+        device:
+          data_type: bigint
+          default_value: 0
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: device
+          order: 2
+          size:
+            - 0
+        photolink:
+          data_type: bigint
+          default_value: 0
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: photolink
+          order: 1
+          size:
+            - 0
+        sent:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: sent
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - device
+          name: device_photolinks_idx_device
+          options: []
+          type: NORMAL
+        - fields:
+            - photolink
+          name: device_photolinks_idx_photolink
+          options: []
+          type: NORMAL
+      name: device_photolinks
+      options: []
+      order: 6
+    devices:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - model
+          match_type: ''
+          name: devices_fk_model
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: device_models
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - user
+          match_type: ''
+          name: devices_fk_user
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: users
+          type: FOREIGN KEY
+      fields:
+        cache:
+          data_type: blob
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: cache
+          order: 4
+          size:
+            - 0
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        model:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: model
+          order: 5
+          size:
+            - 0
+        number:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: number
+          order: 3
+          size:
+            - 45
+        os:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: os
+          order: 2
+          size:
+            - 45
+        user:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: user
+          order: 6
+          size:
+            - 0
+      indices:
+        - fields:
+            - model
+          name: devices_idx_model
+          options: []
+          type: NORMAL
+        - fields:
+            - user
+          name: devices_idx_user
+          options: []
+          type: NORMAL
+      name: devices
+      options: []
+      order: 7
+    mojo_migrations:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - name
+          match_type: ''
+          name: name
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        name:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: name
+          order: 1
+          size:
+            - 255
+        version:
+          data_type: bigint
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: version
+          order: 2
+          size:
+            - 0
+      indices: []
+      name: mojo_migrations
+      options: []
+      order: 8
+    mojo_pubsub_notify:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        channel:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: channel
+          order: 2
+          size:
+            - 64
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        payload:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: payload
+          order: 3
+          size:
+            - 0
+        ts:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: ts
+          order: 4
+          size:
+            - 0
+      indices: []
+      name: mojo_pubsub_notify
+      options: []
+      order: 9
+    mojo_pubsub_subscribe:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - pid
+            - channel
+          match_type: ''
+          name: subs_idx
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        channel:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: channel
+          order: 3
+          size:
+            - 64
+        id:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        pid:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: pid
+          order: 2
+          size:
+            - 0
+        ts:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: ts
+          order: 4
+          size:
+            - 0
+      indices: []
+      name: mojo_pubsub_subscribe
+      options: []
+      order: 10
+    movies:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - title
+          match_type: ''
+          name: title
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        description:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: description
+          order: 3
+          size:
+            - 255
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        image:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: image
+          order: 6
+          size:
+            - 0
+        player:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: player
+          order: 5
+          size:
+            - 45
+        title:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 1
+          name: title
+          order: 2
+          size:
+            - 45
+        url:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: url
+          order: 4
+          size:
+            - 0
+      indices: []
+      name: movies
+      options: []
+      order: 11
+    photolinks:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        description:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: description
+          order: 3
+          size:
+            - 255
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        mediatype:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: mediatype
+          order: 4
+          size:
+            - 45
+        title:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: title
+          order: 2
+          size:
+            - 45
+      indices: []
+      name: photolinks
+      options: []
+      order: 12
+    points:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - trackmotion
+          match_type: ''
+          name: points_fk_trackmotion
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: trackmotions
+          type: FOREIGN KEY
+      fields:
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        t:
+          data_type: double precision
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: t
+          order: 4
+          size:
+            - 0
+        trackmotion:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: trackmotion
+          order: 5
+          size:
+            - 0
+        x:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: x
+          order: 2
+          size:
+            - 0
+        y:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: y
+          order: 3
+          size:
+            - 0
+      indices:
+        - fields:
+            - trackmotion
+          name: points_idx_trackmotion
+          options: []
+          type: NORMAL
+      name: points
+      options: []
+      order: 13
+    providers:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - idproviders
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        avatar:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: avatar
+          order: 3
+          size:
+            - 255
+        idproviders:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: idproviders
+          order: 1
+          size:
+            - 0
+        level:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: level
+          order: 2
+          size:
+            - 0
+      indices: []
+      name: providers
+      options: []
+      order: 14
+    redirects:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - movie
+          match_type: ''
+          name: redirects_fk_movie
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: movies
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - photolink
+          match_type: ''
+          name: redirects_fk_photolink
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: photolinks
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - user
+          match_type: ''
+          name: redirects_fk_user
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: users
+          type: FOREIGN KEY
+      fields:
+        divisor_for_cents:
+          data_type: integer
+          default_value: 100
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: divisor_for_cents
+          order: 8
+          size:
+            - 0
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        movie:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: movie
+          order: 3
+          size:
+            - 0
+        photolink:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: photolink
+          order: 4
+          size:
+            - 0
+        price:
+          data_type: integer
+          default_value: 0
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: price
+          order: 7
+          size:
+            - 0
+        redirect_to:
+          data_type: text
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: redirect_to
+          order: 6
+          size:
+            - 0
+        time:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: time
+          order: 5
+          size:
+            - 0
+        user:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: user
+          order: 2
+          size:
+            - 0
+      indices:
+        - fields:
+            - movie
+          name: redirects_idx_movie
+          options: []
+          type: NORMAL
+        - fields:
+            - photolink
+          name: redirects_idx_photolink
+          options: []
+          type: NORMAL
+        - fields:
+            - user
+          name: redirects_idx_user
+          options: []
+          type: NORMAL
+      name: redirects
+      options: []
+      order: 15
+    thumbs:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - idthumbs
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        idthumbs:
+          data_type: integer
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: idthumbs
+          order: 1
+          size:
+            - 0
+        path:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: path
+          order: 2
+          size:
+            - 255
+      indices: []
+      name: thumbs
+      options: []
+      order: 16
+    trackmotions:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - movie
+          match_type: ''
+          name: trackmotions_fk_movie
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: movies
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - photolink
+          match_type: ''
+          name: trackmotions_fk_photolink
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: photolinks
+          type: FOREIGN KEY
+      fields:
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 2
+          size:
+            - 0
+        movie:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: movie
+          order: 4
+          size:
+            - 0
+        photolink:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: photolink
+          order: 1
+          size:
+            - 0
+        thumb:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: thumb
+          order: 3
+          size:
+            - 255
+      indices:
+        - fields:
+            - movie
+          name: trackmotions_idx_movie
+          options: []
+          type: NORMAL
+        - fields:
+            - photolink
+          name: trackmotions_idx_photolink
+          options: []
+          type: NORMAL
+      name: trackmotions
+      options: []
+      order: 17
+    urls:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: id
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+        - deferrable: 1
+          expression: ''
+          fields:
+            - photolink
+          match_type: ''
+          name: urls_fk_photolink
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: photolinks
+          type: FOREIGN KEY
+      fields:
+        description:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: description
+          order: 4
+          size:
+            - 255
+        href:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: href
+          order: 2
+          size:
+            - 255
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: id
+          order: 1
+          size:
+            - 0
+        photolink:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: photolink
+          order: 5
+          size:
+            - 0
+        title:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: title
+          order: 6
+          size:
+            - 45
+        value:
+          data_type: decimal
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: value
+          order: 3
+          size:
+            - 2
+            - 0
+      indices:
+        - fields:
+            - photolink
+          name: urls_idx_photolink
+          options: []
+          type: NORMAL
+      name: urls
+      options: []
+      order: 18
+    users:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - username
+          match_type: ''
+          name: username
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        active:
+          data_type: tinyint
+          default_value: 1
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: active
+          order: 8
+          size:
+            - 0
+        counter:
+          data_type: integer
+          default_value: 1024
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: counter
+          order: 7
+          size:
+            - 0
+        create_time:
+          data_type: timestamp
+          default_value: !!perl/ref
+            =: current_timestamp
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: create_time
+          order: 4
+          size:
+            - 0
+        email:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: email
+          order: 2
+          size:
+            - 255
+        id:
+          data_type: bigint
+          default_value: ~
+          extra:
+            unsigned: 1
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 5
+          size:
+            - 0
+        password:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: password
+          order: 3
+          size:
+            - 255
+        salt:
+          data_type: char
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 0
+          name: salt
+          order: 6
+          size:
+            - 15
+        username:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: username
+          order: 1
+          size:
+            - 255
+      indices: []
+      name: users
+      options: []
+      order: 19
+    users_has_devices:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - user
+            - device
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - device
+          match_type: ''
+          name: users_has_devices_fk_device
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: devices
+          type: FOREIGN KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - user
+          match_type: ''
+          name: users_has_devices_fk_user
+          on_delete: RESTRICT
+          on_update: RESTRICT
+          options: []
+          reference_fields:
+            - id
+          reference_table: users
+          type: FOREIGN KEY
+      fields:
+        device:
+          data_type: bigint
+          default_value: 0
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: device
+          order: 2
+          size:
+            - 0
+        user:
+          data_type: bigint
+          default_value: 0
+          extra:
+            unsigned: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: user
+          order: 1
+          size:
+            - 0
+      indices:
+        - fields:
+            - device
+          name: users_has_devices_idx_device
+          options: []
+          type: NORMAL
+        - fields:
+            - user
+          name: users_has_devices_idx_user
+          options: []
+          type: NORMAL
+      name: users_has_devices
+      options: []
+      order: 20
+    watchers:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - idwatchers
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+      fields:
+        avatar:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: avatar
+          order: 3
+          size:
+            - 255
+        idwatchers:
+          data_type: integer
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: idwatchers
+          order: 1
+          size:
+            - 0
+        level:
+          data_type: integer
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: level
+          order: 2
+          size:
+            - 0
+      indices: []
+      name: watchers
+      options: []
+      order: 21
+  triggers: {}
+  views: {}
+translator:
+  add_drop_table: 0
+  filename: ~
+  no_comments: 0
+  parser_args:
+    sources:
+      - Auth
+      - Click
+      - CodeData
+      - Component
+      - Device
+      - DeviceModel
+      - DevicePhotolink
+      - MojoMigration
+      - MojoPubsubNotify
+      - MojoPubsubSubscribe
+      - Movy
+      - Photolink
+      - Point
+      - Provider
+      - Redirect
+      - Thumb
+      - Trackmotion
+      - Url
+      - User
+      - UsersHasDevice
+      - Watcher
+  parser_type: SQL::Translator::Parser::DBIx::Class
+  producer_args: {}
+  producer_type: SQL::Translator::Producer::YAML
+  show_warnings: 0
+  trace: 0
+  version: 0.11021

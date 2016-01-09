@@ -1,0 +1,97 @@
+{
+   "sets" : [
+      {
+         "class" : "Thumb",
+         "quantity" : "all"
+      },
+      {
+         "class" : "UsersHasDevice",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "MojoMigration"
+      },
+      {
+         "quantity" : "all",
+         "class" : "CodeData"
+      },
+      {
+         "class" : "Trackmotion",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "DevicePhotolink"
+      },
+      {
+         "quantity" : "all",
+         "class" : "User"
+      },
+      {
+         "class" : "Movy",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Auth"
+      },
+      {
+         "class" : "Device",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "MojoPubsubNotify"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Photolink"
+      },
+      {
+         "quantity" : "all",
+         "class" : "DeviceModel"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Redirect"
+      },
+      {
+         "class" : "Click",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Url",
+         "quantity" : "all"
+      },
+      {
+         "class" : "MojoPubsubSubscribe",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Watcher",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Component",
+         "quantity" : "all"
+      },
+      {
+         "class" : "Point",
+         "quantity" : "all"
+      },
+      {
+         "quantity" : "all",
+         "class" : "Provider"
+      }
+   ],
+   "might_have" : {
+      "fetch" : 0
+   },
+   "has_many" : {
+      "fetch" : 0
+   },
+   "belongs_to" : {
+      "fetch" : 0
+   }
+}

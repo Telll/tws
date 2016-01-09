@@ -12,13 +12,13 @@ use Mojo::JSON qw/encode_json/;
 has schema => sub {
 	my $self = shift;
 	my $db = $self->config->{db};
-	TWS::Schema->connect("dbi:$db->{type}:database=$db->{database}", $db->{user}, $db->{password});
+	TWS::Schema->connect("dbi:$db->{type}:database=$db->{database};host=$db->{host}", $db->{user}, $db->{password});
 };
 
 has mysql => sub {
 	my $self = shift;
 	my $db = $self->config->{db};
-	Mojo::mysql->new("mysql://$db->{user}:$db->{password}\@/$db->{database}")
+	Mojo::mysql->new("mysql://$db->{user}:$db->{password}\@$db->{host}/$db->{database}")
 };
 
 has delimiter => sub {
