@@ -15,6 +15,8 @@ requires 'Mojolicious::Plugin::SecureCORS';
 requires 'Mojolicious::Plugin::JSON::Validator', '>= 0', git => 'git://github.com/FCO/Mojolicious-Plugin-JSON-Validator.git';
 #requires 'Mojolicious::Plugin::CommandWS', '>= 0', git => 'git://github.com/FCO/Mojolicious-Plugin-CommandWS.git';
 #requires 'Mojolicious::Plugin::CommandWS', '>= 0', dir => '../Mojolicious-Plugin-CommandWS';
+requires 'HTML::TokeParser';
+requires 'DateTime';
 requires 'Moose';
 requires 'Params::Validate';
 requires 'JSON';

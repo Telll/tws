@@ -9,3 +9,9 @@ tws:
   links:
     - db
   #command: carton exec dbic-migration -S 'TWS::Schema' -Ilib install --dsn="dbi:mysql:database=tws;host=db;port=3306;password=test" --database MySQL
+webapp:
+  image: webapp
+  ports:
+    - "80:80"
+  links:
+    - tws
