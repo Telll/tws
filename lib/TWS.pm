@@ -8,11 +8,14 @@ use Mojo::EventEmitter;
 use Mojo::Util qw/dumper/;
 use Mojo::mysql;
 use Mojo::JSON qw/encode_json/;
+use DBIx::Class::Migration;
+
+sleep 5;
 
 has schema => sub {
 	my $self = shift;
 	my $db = $self->config->{db};
-	TWS::Schema->connect("dbi:$db->{type}:database=$db->{database};host=$db->{host}", $db->{user}, $db->{password});
+	state $schema = TWS::Schema->connect("dbi:$db->{type}:database=$db->{database};host=$db->{host}", $db->{user}, $db->{password});
 };
 
 has mysql => sub {
@@ -39,10 +42,10 @@ sub startup {
 		->schema({
 			type		=> "object",
 			required	=> [qw/user_name password/],
-			oneOf		=> [
-				{required => [qw/device/]},
-				{required => [qw/model/]}
-			],
+			#oneOf		=> [
+			#	{required => [qw/device/]},
+			#	{required => [qw/model/]}
+			#],
 			properties	=> {
 				user_name	=> {type => "string"},
 				password	=> {type => "string"},
@@ -63,7 +66,10 @@ sub startup {
 			my $dev_obj;
 
 			my $user = $self->resultset("User")->authenticate($user_name, $password);
-			return $cmd->error("Wrong user_name or password") unless $user;
+			unless($user) {
+				warn("Wrong user_name or password$/");
+				return $cmd->error("Wrong user_name or password")
+			}
 			my $auth = $user->generate_token;
 			if(defined $device) {
 				$dev_obj = $self->resultset("Device")->find($device);
@@ -273,6 +279,10 @@ sub startup {
 	# Router
 	my $r = $self->routes;
 	TWS::Routes::create_routes($r);
+
+	my $migration = DBIx::Class::Migration->new(schema => $self->schema);
+	$migration->install_if_needed;
+
 }
 
 42

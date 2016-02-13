@@ -50,8 +50,7 @@ DISTRIBUTIONS
       B::Utils::OP 0.27
     requirements:
       Exporter 0
-      ExtUtils::CBuilder 0
-      ExtUtils::Depends 0.301
+      ExtUtils::Depends 0.302
       ExtUtils::MakeMaker 0
       Scalar::Util 0
       Task::Weaken 0
@@ -93,13 +92,6 @@ DISTRIBUTIONS
       perl 5.008001
       strict 0
       warnings 0
-  CSS-Minifier-XS-0.09
-    pathname: G/GT/GTERMARS/CSS-Minifier-XS-0.09.tar.gz
-    provides:
-      CSS::Minifier::XS 0.09
-    requirements:
-      ExtUtils::CBuilder 0
-      Test::More 0
   Capture-Tiny-0.30
     pathname: D/DA/DAGOLDEN/Capture-Tiny-0.30.tar.gz
     provides:
@@ -341,7 +333,7 @@ DISTRIBUTIONS
       DBD::SQLite::VirtualTable::PerlData::Cursor undef
     requirements:
       DBI 1.57
-      ExtUtils::MakeMaker 6.48
+      ExtUtils::MakeMaker 0
       File::Spec 0.82
       Test::Builder 0.86
       Test::More 0.47
@@ -837,6 +829,7 @@ DISTRIBUTIONS
       Class::Accessor::Grouped 0
       DBD::SQLite 1.11
       DBIx::Class 0.07005
+      Data::UUID 0
       ExtUtils::MakeMaker 6.42
       perl 5.008001
   Data-Dump-1.23
@@ -914,6 +907,13 @@ DISTRIBUTIONS
       Class::Accessor::Chained::Fast 0
       Test::Exception 0
       Test::More 0
+  Data-UUID-1.221
+    pathname: R/RJ/RJBS/Data-UUID-1.221.tar.gz
+    provides:
+      Data::UUID 1.221
+    requirements:
+      Digest::MD5 0
+      ExtUtils::MakeMaker 0
   Data-Visitor-0.30
     pathname: D/DO/DOY/Data-Visitor-0.30.tar.gz
     provides:
@@ -1009,6 +1009,7 @@ DISTRIBUTIONS
       DateTime 0.1
       DateTime::Format::Builder 0.6
       ExtUtils::MakeMaker 0
+      perl 5.003
   DateTime-Format-Strptime-1.62
     pathname: D/DR/DROLSKY/DateTime-Format-Strptime-1.62.tar.gz
     provides:
@@ -1636,12 +1637,13 @@ DISTRIBUTIONS
       File::HomeDir::Windows 1.00
     requirements:
       Carp 0
-      Cwd 3.12
+      Cwd 3
       ExtUtils::MakeMaker 6.36
       File::Path 2.01
-      File::Spec 3.12
+      File::Spec 3
       File::Temp 0.19
       File::Which 0.05
+      Mac::SystemDirectory 0.04
       Test::More 0.47
       perl 5.00503
   File-ShareDir-1.102
@@ -1787,14 +1789,6 @@ DISTRIBUTIONS
       IO::Socket 0
       Socket 1.97
       Test::More 0.88
-  IPC-Run3-0.048
-    pathname: R/RJ/RJBS/IPC-Run3-0.048.tar.gz
-    provides:
-      IPC::Run3 0.048
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::More 0.31
-      Time::HiRes 0
   Import-Into-1.002005
     pathname: H/HA/HAARG/Import-Into-1.002005.tar.gz
     provides:
@@ -1814,10 +1808,10 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Test::More 0
-  JSON-Validator-0.64
-    pathname: J/JH/JHTHORSEN/JSON-Validator-0.64.tar.gz
+  JSON-Validator-0.66
+    pathname: J/JH/JHTHORSEN/JSON-Validator-0.66.tar.gz
     provides:
-      JSON::Validator 0.64
+      JSON::Validator 0.66
     requirements:
       ExtUtils::MakeMaker 0
       Mojolicious 6.00
@@ -1831,14 +1825,6 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Types::Serialiser 0
       common::sense 0
-  JavaScript-Minifier-XS-0.11
-    pathname: G/GT/GTERMARS/JavaScript-Minifier-XS-0.11.tar.gz
-    provides:
-      JavaScript::Minifier::XS 0.11
-    requirements:
-      ExtUtils::CBuilder 0
-      Test::More 0
-      perl v5.6.0
   Lexical-SealRequireHints-0.009
     pathname: Z/ZE/ZEFRAM/Lexical-SealRequireHints-0.009.tar.gz
     provides:
@@ -2027,6 +2013,14 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.59
       Test::More 0.47
       perl 5.006
+  Mac-SystemDirectory-0.06
+    pathname: C/CH/CHANSEN/Mac-SystemDirectory-0.06.tar.gz
+    provides:
+      Mac::SystemDirectory 0.06
+    requirements:
+      ExtUtils::MakeMaker 6.42
+      Test::More 0.86
+      perl 5.006
   Memoize-ExpireLRU-0.55
     pathname: B/BP/BPOWERS/Memoize-ExpireLRU-0.55.tar.gz
     provides:
@@ -2060,6 +2054,7 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Mojolicious 6.0
+      perl 5.010001
   Minion-Backend-SQLite-0.003
     pathname: D/DB/DBOOK/Minion-Backend-SQLite-0.003.tar.gz
     provides:
@@ -2379,44 +2374,7 @@ DISTRIBUTIONS
       JSON::PP 2.27103
       Pod::Simple 3.09
       Time::Local 1.2
-  Mojolicious-Plugin-AssetPack-0.69
-    pathname: J/JH/JHTHORSEN/Mojolicious-Plugin-AssetPack-0.69.tar.gz
-    provides:
-      Mojolicious::Plugin::AssetPack 0.69
-      Mojolicious::Plugin::AssetPack::Asset undef
-      Mojolicious::Plugin::AssetPack::Handler::Http undef
-      Mojolicious::Plugin::AssetPack::Handler::Https undef
-      Mojolicious::Plugin::AssetPack::Handler::Sprites undef
-      Mojolicious::Plugin::AssetPack::Preprocessor undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::CoffeeScript undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::Css undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::Fallback undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::JavaScript undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::Jsx undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::Less undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::Sass undef
-      Mojolicious::Plugin::AssetPack::Preprocessor::Scss undef
-      Mojolicious::Plugin::AssetPack::Preprocessors 0.01
-      Mojolicious::Plugin::AssetPack::Preprocessors::CWD 0.01
-    requirements:
-      CSS::Minifier::XS 0.01
-      ExtUtils::MakeMaker 0
-      File::Which 1.00
-      IPC::Run3 0.04
-      JavaScript::Minifier::XS 0.11
-      Mojolicious 5.41
-      Test::More 0.88
-  Mojolicious-Plugin-Browserify-0.06
-    pathname: J/JH/JHTHORSEN/Mojolicious-Plugin-Browserify-0.06.tar.gz
-    provides:
-      Mojolicious::Command::browserify undef
-      Mojolicious::Plugin::Browserify 0.06
-      Mojolicious::Plugin::Browserify::Processor undef
-    requirements:
-      ExtUtils::MakeMaker 0
-      JavaScript::Minifier::XS 0.09
-      Mojolicious::Plugin::AssetPack 0.31
-      Test::More 0.88
+      perl 5.010001
   Mojolicious-Plugin-CORS-0.02
     pathname: A/AM/AMIRITE/Mojolicious-Plugin-CORS-0.02.tar.gz
     provides:
@@ -2846,7 +2804,6 @@ DISTRIBUTIONS
       Task::Weaken 0
       Try::Tiny 0.17
       parent 0.223
-      perl 5.008003
       strict 1.03
       warnings 1.03
   MooseX-Attribute-ENV-0.02
@@ -2855,7 +2812,7 @@ DISTRIBUTIONS
       Moose::Meta::Attribute::Custom::Trait::ENV 0.02
       MooseX::Attribute::ENV 0.02
     requirements:
-      ExtUtils::MakeMaker 6.66
+      ExtUtils::MakeMaker 7.04
       Moose 0.48
       Test::More 0
       perl 5.008006
@@ -3711,10 +3668,10 @@ DISTRIBUTIONS
       Test::Builder::Tester 1.02
       Test::More 0
       perl 5.006
-  Test-Warnings-0.024
-    pathname: E/ET/ETHER/Test-Warnings-0.024.tar.gz
+  Test-Warnings-0.026
+    pathname: E/ET/ETHER/Test-Warnings-0.026.tar.gz
     provides:
-      Test::Warnings 0.024
+      Test::Warnings 0.026
     requirements:
       Carp 0
       Exporter 0

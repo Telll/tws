@@ -14,6 +14,7 @@ sub create_helpers {
 		my $self	= shift;
 		my $key		= shift;
 
+		print "key => ", !!$key, $/;
 		return !!$key
 	});
 

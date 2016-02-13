@@ -22,6 +22,10 @@ RUN carton install --deployment
 
 #RUN browserify js/main.js -o lib/Mojolicious/Plugin/CommandWS/public/CommandWS.js
 
-EXPOSE 3000
+EXPOSE 8080
+
+ENV MOJO_LOG_LEVEL debug
+ENV DBIC_TRACE 1
 
 CMD carton exec perl -IMojolicious-Plugin-CommandWS/lib script/tws daemon
+#CMD carton exec perl -IMojolicious-Plugin-CommandWS/lib /root/tws/local/bin/hypnotoad script/tws

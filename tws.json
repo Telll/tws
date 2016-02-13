@@ -4,12 +4,12 @@
 		"type":			"mysql",
 		"database":		"tws",
 		"user":			"root",
-		"password":		"test",
-		"email": {
-			"template":	"email.mt",
-			"from":		"test@telll.com",
-			"subject":	"Telll - photolink!"
-		}
+		"password":		"test"
+	},
+	"email": {
+		"template":	"email.mt",
+		"from":		"test@telll.com",
+		"subject":	"Telll - photolink!"
 	},
 	"minion_backend":	{
 		"SQLite": "/tmp/bla.db"
