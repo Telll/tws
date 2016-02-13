@@ -212,9 +212,9 @@ __DATA__
 @@ photolink.schema.json
 
 {
-	"title": "Example Schema",
+	"title": "Photolink Schema",
 	"type": "object",
-	"required": ["title", "description", "movie"],
+	"required": ["title", "description"],
 	"properties": {
 		"title": {
 			"type": "string",

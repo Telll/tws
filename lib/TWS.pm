@@ -280,9 +280,10 @@ sub startup {
 	my $r = $self->routes;
 	TWS::Routes::create_routes($r);
 
-	my $migration = DBIx::Class::Migration->new(schema => $self->schema);
-	$migration->install_if_needed;
+	#my $migration = DBIx::Class::Migration->new(schema => $self->schema);
+	#$migration->install_if_needed(default_fixture_sets => ['all_tables']);
 
+	$self->mysql->migrations->from_file("migrate.sql")->migrate
 }
 
 42
