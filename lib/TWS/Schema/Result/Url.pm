@@ -144,7 +144,30 @@ sub data {
 		title		=> $self->title,
 		description	=> $self->description,
 		rel 		=> "NYI",
-		url		=> $self->href,
+		href		=> $self->href,
 	}
 }
 1;
+
+__DATA__
+
+@@ url.schema.json
+
+{
+	"title": "URL Schema",
+	"type": "object",
+	"required": ["title", "description", "href"],
+	"properties": {
+		"title": {
+			"type": "string",
+			"maxLength": 45
+		},
+		"description":	{
+			"type": "string",
+			"maxLength": 255
+		},
+		"href":	{
+			"type": "string"
+		}
+	}
+}

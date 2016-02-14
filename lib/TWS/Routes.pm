@@ -97,9 +97,34 @@ sub create_routes {
 	);
 
 	$app->post("/photolink/")->to("photolink#create", "json.validator.schema" => "data://TWS::Schema::Result::Photolink/photolink.schema.json");
+	$appcors->cors("/photolink/")->to(
+		"cors.methods"	=> "post",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
 	my $get_pl = $app->under("/photolink/:photolink_id")->to("photolink#get");
 	$get_pl->get("/");
 	$get_pl->get("/follow")->to("photolink#follow");
+
+	$get_pl->post("/url/")->to("url#create", "json.validator.schema" => "data://TWS::Schema::Result::Url/url.schema.json");
+	$appcors->cors("/photolink/:photolink_id/url/")->to(
+		"cors.methods"	=> "post",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	$appcors->cors("/photolink/:photolink_id/url/")->to(
+		"cors.methods"	=> "post",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
+	my $url = $get_pl->under("/url/:url");
+	$url->get("/")->to("url#get");
+	$url->delete("/")->to("url#del");
+
+	$appcors->cors("/photolink/:photolink_id/url/:url")->to(
+		"cors.methods"	=> "get,delete",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
 
 	$get_pl->post("/track_motion")->to("track_motion#create", "json.validator.schema" => "data://TWS::Schema::Result::Trackmotion/trackmotion.schema.json");
 	my $get_track_motion = $app->under("/track_motion/:track_motion_id")->to("track_motion#get");
