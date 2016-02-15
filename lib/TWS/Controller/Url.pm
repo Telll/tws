@@ -16,7 +16,7 @@ sub create {
 
 	my $url = $self->stash->{got_photolink}->create_related(urls => $data);
 	warn "url: $url; url id: ", $url->{id}, $/;
-	$self->render(json => {created => $url->{id} ? \1 : \0, photolink_id => $self->stash->{got_photolink}->{id}, id => $url->{id}})
+	$self->render(json => {created => $url ? \1 : \0, url => $url->data})
 }
 
 sub get {
