@@ -128,7 +128,7 @@ __PACKAGE__->belongs_to(
   "photolink",
   "TWS::Schema::Result::Photolink",
   { id => "photolink" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 

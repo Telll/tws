@@ -104,6 +104,7 @@ sub create_routes {
 
 	my $get_pl = $app->under("/photolink/:photolink_id")->to("photolink#get");
 	$get_pl->get("/");
+	$get_pl->delete("/")->to("photolink#delete");
 	$get_pl->get("/follow")->to("photolink#follow");
 
 	$get_pl->post("/url/")->to("url#create", "json.validator.schema" => "data://TWS::Schema::Result::Url/url.schema.json");

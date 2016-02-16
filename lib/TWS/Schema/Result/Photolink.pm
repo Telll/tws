@@ -149,7 +149,7 @@ __PACKAGE__->has_many(
   "trackmotions",
   "TWS::Schema::Result::Trackmotion",
   { "foreign.photolink" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+  { cascade_copy => 0, cascade_delete => 1 },
 );
 
 =head2 urls
@@ -164,7 +164,7 @@ __PACKAGE__->has_many(
   "urls",
   "TWS::Schema::Result::Url",
   { "foreign.photolink" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+  { cascade_copy => 0, cascade_delete => 1 },
 );
 
 
