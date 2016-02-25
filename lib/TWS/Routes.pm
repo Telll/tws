@@ -21,6 +21,12 @@ sub create_routes {
 	$api->delete("/login")->to("session#logout");
 	$api->cors("/login");
 
+	$api->get("/track_motion/:track_motion_id")->to("track_motion#get");
+	$api->cors("/track_motion/:track_motion_id")->to(
+		"cors.methods"	=> "GET",
+		"cors.headers"	=> "X-API-Key, X-Auth-Key, X-Device-ID",
+	);
+
 	my $app = $api->under("/app")->to("session#verify");
 	my $appcors = $api->under("/app");
 
