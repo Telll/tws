@@ -12,10 +12,14 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - minion
     restart: always
-    #links:
-    #  - db
-    #command: carton exec dbic-migration -S 'TWS::Schema' -Ilib install --dsn="dbi:mysql:database=tws;host=db;port=3306;password=test" --database MySQL
+  minion:
+    build: .
+    depends_on:
+      - db
+    restart: always
+    command: carton exec perl -IMojolicious-Plugin-CommandWS/lib script/tws minion worker
   webapp:
     image: webapp
     ports:
@@ -23,5 +27,3 @@ services:
     depends_on:
       - tws
     restart: always
-    #links:
-    #  - tws

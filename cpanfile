@@ -24,3 +24,4 @@ requires 'JSON';
 requires 'JSON::XS';
 requires 'Data::Dump::Streamer';
 requires 'JSON::Validator';
+requires 'Net::AWS::SES';

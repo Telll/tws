@@ -27,5 +27,5 @@ EXPOSE 8080
 ENV MOJO_LOG_LEVEL debug
 ENV DBIC_TRACE 1
 
-CMD carton exec perl -IMojolicious-Plugin-CommandWS/lib script/tws daemon
+CMD carton exec perl -IMojolicious-Plugin-CommandWS/lib script/tws prefork
 #CMD carton exec perl -IMojolicious-Plugin-CommandWS/lib /root/tws/local/bin/hypnotoad script/tws
